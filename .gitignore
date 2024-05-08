@@ -1,0 +1,10 @@
+**/_minted-presentation
+
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.gz
+*.toc
+*.vrb

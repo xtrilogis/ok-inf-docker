@@ -1,0 +1,6 @@
+FROM alpine
+
+# ENTRYPOINT ["echo"]
+# CMD ["Hello","Students."]
+
+ENTRYPOINT ["echo", "Hello World"]
