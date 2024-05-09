@@ -1,4 +1,9 @@
 **/_minted-presentation
+**/build
+
+**/venv
+**/node_modules
+**/__pycache__
 
 *.aux
 *.log

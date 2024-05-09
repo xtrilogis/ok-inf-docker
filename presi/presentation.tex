@@ -1,4 +1,4 @@
-\documentclass[22pt]{beamer}
+\documentclass[22pt,handout]{beamer}
 % \documentclass[handout]{beamer}
 % add theme and color theme https://www.overleaf.com/learn/latex/Beamer#Reference_guide
 \setbeamertemplate{navigation symbols}{arguments} % hides navigation buttons
@@ -16,29 +16,50 @@
 \date{19.06.2024}
 
 \begin{document}
+
+\begin{frame}[t]
+    \vfill
+    \begin{center}
+        \includegraphics[width=1\textwidth]{Bilder/docker-how.png}
+    \end{center}
+    \vfill
+\end{frame}
+
 \maketitle
 
 \begin{frame}{Gliederung}
     \tableofcontents
 \end{frame}
 
-
-\begin{frame}[t]
+\begin{frame}
     \frametitle{Wiso, Weshalb, Warum?}
-    \begin{itemize}
-        \item hier motivation und coole usecases
-        \item independant entwicklungs umgebung \pause
-        \item Kubernetes \pause
-        \item ...
-    \end{itemize}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{Bilder/docker-why.png}
+    \end{center}\pause
+    \begin{center}
+        "a sandboxed process on your machine that is isolated from all other processes on the host machine"
+    \end{center}\pause
+    \begin{center}
+        "It works on my computer"
+    \end{center}\pause
+    \begin{center}
+        "faster onboarding and testing while also simplifying the deployment of services"
+    \end{center}
 \end{frame}
 
 \begin{frame}[t]
-    \frametitle{Wer ist Moby Dock?}
-    \begin{itemize}
-        \item 1
-    \end{itemize} 
-    %% TODO: bild vom docker wahl
+    \frametitle{Wer ist Moby Dock?}\pause
+    \only<2>{\begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Bilder/mobydocker.jpg}
+    \end{figure}
+    }
+    \only<3>{\begin{figure}[h]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Bilder/wettbewerb.png}
+        \caption{Wettbewerb zum Icon für Docker}
+    \end{figure}
+    }
 \end{frame}
 
 \begin{frame}[t]
@@ -93,7 +114,7 @@
     \frametitle{Dockerfile}
     \begin{figure}[h]
         \centering
-        \includegraphics[width=0.5\textwidth]{Hadolint.png}
+        \includegraphics[width=0.5\textwidth]{Bilder/Hadolint.png}
         \caption{}
     \end{figure}
 \end{frame}
@@ -175,7 +196,9 @@
 \begin{frame}[t]
     \frametitle{Coole Quellen und so weiter}
     \begin{itemize}
-        \item 1
+        \item \href{https://www.docker.com/}{https://www.docker.com/}
+        \item \href{https://docs.docker.com/get-started/}{https://docs.docker.com/get-started/}
+        \item 
     \end{itemize} 
 \end{frame}
 
@@ -199,9 +222,9 @@
 \end{wrapfigure}
 
 \begin{figure}[h]
-\centering
-\includegraphics[width=0.5\textwidth]{spiral}
-\caption{}
+    \centering
+    \includegraphics[width=0.5\textwidth]{spiral}
+    \caption{}
 \end{figure}
     
 \end{comment}
