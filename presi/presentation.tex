@@ -17,6 +17,10 @@
 
 \begin{document}
 
+%% TODO: layout element, dass kennzeichnet, wann man ins terminal wechselt vgl. "Vorlesung" bei EAE
+%% TODO: how to make one list item without overhead -> macro?
+%% TODO: oneline minted
+
 \begin{frame}[t]
     \vfill
     \begin{center}
@@ -64,35 +68,76 @@
 
 \begin{frame}[t]
     \frametitle{Was ist Docker?}
+    %% TODO: good definition or leave out
     \begin{itemize}
-        \item 1
+        \item ? (vllt nicht als Folie sondern nur was erwähnen)
+        \item Toolbox
+        \item sandbox
+        \item configurierbare Umgebung
     \end{itemize} 
     %% bild
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Bilder/Docker Concept.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Was ist Docker?}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Bilder/Docker-Ablauf.png}
+        \caption{Zusammenhang der Docker Komponenten}
+    \end{figure}
 \end{frame}
 
 \begin{frame}[t]
     \frametitle{Wichtige Begriffe}
+    %% TODO: good formatting for this slide
     Docker
+    - freie Software zur Isolierung von Anwendungen mit Hilfe von Containervirtualisierung
     Container
+    - Umgebung in der die tatsächliche Anwendung läuft
     Image
+    - Blaupausen, um einen Container zu erstellen
     Dockerfile
+    - Anleitung, um ein Image zu erstellen
     Docker Compose
-    Docker Hub
+    - Orchestrierungstool (?), Wrapper für einen oder mehrere Container
+    Container Registy (Docker Hub) 
+    - Ort an dem viele verschindene Images gespeichert und geteilt werden können
     Docker Desktop
+    - UI für alles was man in der CLI machen kann (?) %% TODO: 
 \end{frame}
 
 \begin{frame}[t]
-    \frametitle{Hello World}
-    \begin{itemize}
-        \item Wechsel zu cmd
-        \item docker --help
-        \item docker run hello-world
-        \item docker run --help
-    \end{itemize} 
-    %% docker run mit versch Argumenten
+    \frametitle{Wie kreige ich dieses "Docker"?}
+    %% TODO: installation guide + ref to docker desktop
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Hello World} %% winkende Hand?
+    \begin{minted}{bash}
+        $ docker -v
+        $ docker --help
+        $ docker run hello-world
+    \end{minted}
+
+    Ab ins Terminal
 \end{frame}
 
 \begin{frame}[t]
+    \frametitle{Was ist Docker?}
+    %% TODO: highlight so that dockerfile is highlighted
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Bilder/Docker-Ablauf.png}
+        \caption{Zusammenhang der Docker Komponenten}
+    \end{figure}
+\end{frame}
+
+\begin{comment}
+    \begin{frame}[t]
     \frametitle{Basic commands}
     \begin{itemize}
         \item docker run
@@ -100,26 +145,64 @@
         \item 
     \end{itemize} 
 \end{frame}
+\end{comment}
+
 
 \begin{frame}[t]
     \frametitle{Dockerfile}
     \begin{itemize}
-        \item FROM, CMD \& Entrypoint, RUN, COPY, ARG
-        \item Layer
-    \end{itemize} 
-    %% docker build
-\end{frame}
+        \item Ein Dockerfile ist die Anleitung um ein Image zu erstellen.
+        %% Mit einem Dockerfile kann man den Inhalt des Containers configurieren
+        %% \item Image zu einem Dockerfile erstellen: \verb|docker build .|
+        %%\item Image mit einem namen versehen: \verb|-t name:version| (version ist optional)
+        \item Standardmäßig hießt die Datei 'Dockerfile'
+        %%\item \verb|-f <Dateiname>| für eigens benannte Dateien
+    \end{itemize}
 
-\begin{frame}[t]
-    \frametitle{Dockerfile}
+    \verb|make lc-line-concept|
+    
+    %% TODO: Image zu Hello World ?
     \begin{figure}[h]
         \centering
         \includegraphics[width=0.5\textwidth]{Bilder/Hadolint.png}
-        \caption{}
+        \caption{Plugin für die Arbeit mit Docker}
     \end{figure}
+
 \end{frame}
 
+%% Ü: Wie sieht also ein Dockerfile aus
+\begin{frame}[t]
+    \frametitle{Dockerfile}
+    %% Code tour durch ein Dockerfile mit allen Elementen oder hier eines langsam aufbauen
+    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/Dockerfile}
+    \begin{itemize}
+        \item FROM, CMD \& Entrypoint, RUN, COPY, ARG
+        \item Layer %% TODO: one per command?
+    \end{itemize} 
+\end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{title}
+    \begin{minted}{bash}
+        docker build -t example:cmd -f Dockerfile.cmd .
+        docker build -t example:entry -f Dockerfile.entry .
+
+        docker run example:cmd
+        docker run example:cmd hello
+        docker run example:entry hello
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{title}
+    \begin{minted}{bash}
+        docker build -t example:single -f Dockerfile.single .
+        docker build -t example:multi -f Dockerfile.multi .
+
+        docker ps -a
+        docker images
+    \end{minted}
+\end{frame}
 %% vllt Docker mit ubuntu for exec, it, start, stop, name
 
 \begin{frame}[fragile]
