@@ -7,6 +7,11 @@
 \usepackage{minted}
 \usepackage{graphicx}
 \usepackage{comment}
+\usepackage{color}
+
+
+\newcommand{\code}[1]{\colorbox{gray!10}{\texttt{#1}}}
+
 %% \usepackage[b]{beamer}
 \usemintedstyle{tango}
 \pagenumbering{roman}
@@ -93,31 +98,40 @@
 
 \begin{frame}[t]
     \frametitle{Wichtige Begriffe}
-    %% TODO: good formatting for this slide
-    Docker
-    - freie Software zur Isolierung von Anwendungen mit Hilfe von Containervirtualisierung
-    Container
-    - Umgebung in der die tatsächliche Anwendung läuft
-    Image
-    - Blaupausen, um einen Container zu erstellen
-    Dockerfile
-    - Anleitung, um ein Image zu erstellen
-    Docker Compose
-    - Orchestrierungstool (?), Wrapper für einen oder mehrere Container
-    Container Registy (Docker Hub) 
-    - Ort an dem viele verschindene Images gespeichert und geteilt werden können
-    Docker Desktop
-    - UI für alles was man in der CLI machen kann (?) %% TODO: 
+    \begin{block}{Docker}
+        freie Software zur Isolierung von Anwendungen mit Hilfe von     Docker
+        Containervirtualisierung
+    \end{block}
+    \begin{block}{Container}
+        Umgebung in der die tatsächliche Anwendung läuft
+    \end{block}
+    \begin{block}{Image}
+        Blaupausen, um einen Container zu erstellen
+    \end{block}
+    \begin{block}{Dockerfile}
+        Anleitung, um ein Image zu erstellen
+    \end{block}
+    \begin{block}{Registry}
+        z.B. Docker Hub, EAC....
+        Ort an dem viele verschindene Images gespeichert und geteilt werden können
+    \end{block}
+    %% \begin{block}{Docker Compose}
+    %%    - Orchestrierungstool (?), Wrapper für einen oder mehrere Container
+    %%\end{block}
+    %%\begin{block}{Docker Desktop}
+    %%    - UI für alles was man in der CLI machen kann (?) %% TODO: 
+    %%\end{block}
 \end{frame}
 
 \begin{frame}[t]
     \frametitle{Wie kreige ich dieses "Docker"?}
-    %% TODO: installation guide + ref to docker desktop
+    \includegraphics[width=0.5\textwidth]{Bilder/Installation.png}
+    https://docs.docker.com/engine/install/ 
 \end{frame}
 
 \begin{frame}[fragile]
     \frametitle{Hello World} %% winkende Hand?
-    \begin{minted}{bash}
+    \begin{minted}[fontsize=\footnotesize, frame=lines, fontfamily=terminus]{bash}
         $ docker -v
         $ docker --help
         $ docker run hello-world
@@ -126,14 +140,10 @@
     Ab ins Terminal
 \end{frame}
 
-\begin{frame}[t]
+\begin{frame}[c]
     \frametitle{Was ist Docker?}
     %% TODO: highlight so that dockerfile is highlighted
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.5\textwidth]{Bilder/Docker-Ablauf.png}
-        \caption{Zusammenhang der Docker Komponenten}
-    \end{figure}
+    \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf.png}
 \end{frame}
 
 \begin{comment}
@@ -148,18 +158,16 @@
 \end{comment}
 
 
-\begin{frame}[t]
+\begin{frame}[fragile]
     \frametitle{Dockerfile}
     \begin{itemize}
         \item Ein Dockerfile ist die Anleitung um ein Image zu erstellen.
         %% Mit einem Dockerfile kann man den Inhalt des Containers configurieren
-        %% \item Image zu einem Dockerfile erstellen: \verb|docker build .|
-        %%\item Image mit einem namen versehen: \verb|-t name:version| (version ist optional)
+        \item Image zu einem Dockerfile erstellen: \code{docker build .}
+        \item Image mit einem namen versehen: \code{-t name:version} (version ist optional)
         \item Standardmäßig hießt die Datei 'Dockerfile'
-        %%\item \verb|-f <Dateiname>| für eigens benannte Dateien
+        \item \code{-f <Dateiname>} für eigens benannte Dateien
     \end{itemize}
-
-    \verb|make lc-line-concept|
     
     %% TODO: Image zu Hello World ?
     \begin{figure}[h]
@@ -265,7 +273,17 @@
 \end{frame}
 
 \begin{frame}[t]
-    \frametitle{important Commands}
+    \frametitle{title}
+    \begin{itemize}
+        \item OpenDrone Map
+        \item [Nathalies Kubernetes Arbeit]
+        \item [Felix Hiwi arbeit]
+        \item [deply your app on a cloud hosted frame work]
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Cheatsheet}
     \begin{itemize}
         \item docker run
         \item docker build
