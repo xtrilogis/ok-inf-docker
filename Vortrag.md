@@ -5,12 +5,13 @@ todo
 - [ ] ~~add sql dep~~
 - [ ] ~~add db container~~
 - [ ] list up Question the Lightning Talk should awnser
+- [ ] Dockerignore
 
 ```query
 tag:#todo  path:Docs/Container
 ```
 Outline
-- [ ] Quickstart (Motivation, kleiner Überblick?) vgl. [[#Quick Start]] ([GitHub - OpenDroneMap/WebODM: User-friendly, commercial-grade software for processing aerial imagery. 🛩](https://github.com/OpenDroneMap/WebODM?tab=readme-ov-file#recommended-machine-specs))
+- [ ] Quickstart (Motivation, kleiner Überblick?) vgl. [[#Quick Start]] 
 - [ ] Wichtige Begriffe (Container, Images)
 - [ ] Beispiel: `docker run hello world`
 - [ ] `docker run` erklären und wichtige Flags
@@ -39,6 +40,10 @@ Outline
 	- [ ] dann beides in ein compose file packen
 	- [ ] `docker compose build, up, down` (start, stop?)
 - [ ] Docker Desktop zeigen
+- [ ] Was als nächstes
+	- [ ] ([GitHub - OpenDroneMap/WebODM: User-friendly, commercial-grade software for processing aerial imagery. 🛩](https://github.com/OpenDroneMap/WebODM?tab=readme-ov-file#recommended-machine-specs))
+	- [ ] Kubernetes Cluser (Modelle trainieren)
+	- [ ] Webseite hosten ??
 
 
 Beispiele:
