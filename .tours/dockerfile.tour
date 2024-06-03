@@ -1,0 +1,86 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Dockerfile",
+  "steps": [
+    {
+      "file": "examples/Dockerfile",
+      "description": "FROM instruction\r\n\r\nSet the baseImage to use for subsequent instructions. FROM must be the first instruction in a Dockerfile. (Except for ARG)\r\n\r\n\r\n```Dockerfile\r\nFROM baseImage\r\nFROM baseImage:tag\r\nFROM baseImage@digest\r\n```",
+      "line": 2
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "ARG instruction\r\n\r\nDefine a variable with an optional default value that users can override at build-time when using docker build.\r\n```Dockerfile\r\nARG userName\r\nARG testOutputDir=test\r\n```\r\n\r\n\r\nBeispiel:\r\n```Dockerfile\r\nARG VERSION\r\nFROM ubuntu:VERSION\r\n```\r\n---\r\n`$ docker build --build-arg VERSION=22.04 my_image` # sonst Fehler",
+      "line": 5
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "LABEL instruction\r\n\r\nAdd Metadata\r\n\r\nBeispiel: `LABEL version=\"1.0\"`\r\n",
+      "line": 8
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "ENV instruction\r\n\r\nSet environment variables. Can also be set at runtime with `--env` or `-e`\r\n\r\nUnterschied zu ARG: ARG ist nur zur buildtime verfügbar, ENV existiert als Umgebungsvariable im fertigen Image",
+      "line": 11
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "USER Instruction\r\n\r\nSet the user used for following CMD, ENTRYPOINT or RUN instructions, as well as the user when running the image",
+      "line": 14
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "WORKDIR instruction\r\n\r\nSet the working directory for any subsequent instructions as well as for later when running the image (?) TODO\r\n\r\n```Dockerfile\r\nWORKDIR /path/to/workdir\r\nWORKDIR relative/path\r\n```\r\n\r\nBeispiel:\r\n```Dockerfile\r\nWORKDIR /etc/\r\nWORKDIR user/app\r\n```",
+      "line": 17
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "COPY instruction\r\n\r\nTODO",
+      "line": 20
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "ADD instruction\r\n\r\nTODO",
+      "line": 23
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "ADD vs. COPY\r\n\r\nTODO",
+      "line": 24
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "RUN instruction\r\n\r\nTODO",
+      "line": 26
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "EXPOSE instruction\r\n\r\nTODO",
+      "line": 30
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "SHELL instruction\r\n",
+      "line": 33
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "ENTRYPOINT instruction\r\n\r\nTODO",
+      "line": 35
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "CMD instruction\r\n\r\nTODO",
+      "line": 37
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "CMD vs. ENTRYPOINT",
+      "line": 38
+    },
+    {
+      "file": "examples/Dockerfile",
+      "description": "Weitere Beispiele, instructions https://docs.docker.com/reference/dockerfile/",
+      "line": 39
+    }
+  ]
+}

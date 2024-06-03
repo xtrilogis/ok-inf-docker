@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage{comment}
 \usepackage{color}
+\usepackage{hyperref}
 
 
 \newcommand{\code}[1]{\colorbox{gray!10}{\texttt{#1}}}
@@ -126,7 +127,7 @@
 \begin{frame}[t]
     \frametitle{Wie kreige ich dieses "Docker"?}
     \includegraphics[width=0.5\textwidth]{Bilder/Installation.png}
-    https://docs.docker.com/engine/install/ 
+    \href{https://docs.docker.com/engine/install}{Doku}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -138,6 +139,17 @@
     \end{minted}
 
     Ab ins Terminal
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{docker run} 
+    \begin{minted}[fontsize=\footnotesize, frame=lines, fontfamily=terminus]{bash}
+        $ docker 
+            adf
+            sadf
+    \end{minted}
+
+    \includegraphics{Bilder/Docker build.png}
 \end{frame}
 
 \begin{frame}[c]
@@ -167,7 +179,9 @@
         \item Image mit einem namen versehen: \code{-t name:version} (version ist optional)
         \item Standardmäßig hießt die Datei 'Dockerfile'
         \item \code{-f <Dateiname>} für eigens benannte Dateien
+        \item wieter Optionen mit \code{docker buildx build}
     \end{itemize}
+    \includegraphics{Bilder/Docker build.png}
     
     %% TODO: Image zu Hello World ?
     \begin{figure}[h]
@@ -179,19 +193,25 @@
 \end{frame}
 
 %% Ü: Wie sieht also ein Dockerfile aus
-\begin{frame}[t]
+\begin{frame}[fragile]
     \frametitle{Dockerfile}
-    %% Code tour durch ein Dockerfile mit allen Elementen oder hier eines langsam aufbauen
-    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/Dockerfile}
-    \begin{itemize}
-        \item FROM, CMD \& Entrypoint, RUN, COPY, ARG
-        \item Layer %% TODO: one per command?
-    \end{itemize} 
+    
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Bilder/mobydocker.jpg}
+        \caption{Code Tour}
+    \end{figure}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{Bilder/mobydocker.jpg}
+        \caption{Beispiel Dockerfile}
+    \end{figure}
+    \href{https://docs.docker.com/reference/dockerfile/#overview}{Doku}
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitle{title}
-    \begin{minted}{bash}
+    \frametitle{CMD vs. ENTRYPOINT}
+    \begin{minted}[fontsize=\footnotesize, frame=lines]{bash}
         docker build -t example:cmd -f Dockerfile.cmd .
         docker build -t example:entry -f Dockerfile.entry .
 
@@ -199,17 +219,22 @@
         docker run example:cmd hello
         docker run example:entry hello
     \end{minted}
+    CMD: wird überschrieben
+    EP: bestimmte den command, argumente können hinzugefügt werden
+    % mehrere EP commands
+    beide: bestimmen, was nach dem start ausgeführt wird
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitle{title}
-    \begin{minted}{bash}
+    \frametitle{RUN}
+    \begin{minted}[fontsize=\footnotesize, frame=lines]{bash}
         docker build -t example:single -f Dockerfile.single .
         docker build -t example:multi -f Dockerfile.multi .
 
         docker ps -a
         docker images
     \end{minted}
+    spart speicher schnellerer build
 \end{frame}
 %% vllt Docker mit ubuntu for exec, it, start, stop, name
 
