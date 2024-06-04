@@ -6,6 +6,9 @@ todo
 - [ ] ~~add db container~~
 - [ ] list up Question the Lightning Talk should awnser
 - [ ] Dockerignore
+- [ ] Code Touren testen
+- [ ] #todo Code tour bild
+- [ ] schöner weg um die ClI commands mit argumenten zu präsentiern
 
 ```query
 tag:#todo  path:Docs/Container
