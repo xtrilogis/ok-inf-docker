@@ -29,32 +29,32 @@
     },
     {
       "file": "examples/Dockerfile",
-      "description": "WORKDIR instruction\r\n\r\nSet the working directory for any subsequent instructions as well as for later when running the image (?) TODO\r\n\r\n```Dockerfile\r\nWORKDIR /path/to/workdir\r\nWORKDIR relative/path\r\n```\r\n\r\nBeispiel:\r\n```Dockerfile\r\nWORKDIR /etc/\r\nWORKDIR user/app\r\n```",
+      "description": "WORKDIR instruction\r\n\r\nSet the working directory for any subsequent instructions as well as for later when running the image (?) TODO\r\n- `WORKDIR` affects `RUN, CMD, ENTRYPOINT, COPY, ADD`\r\n- `WORKDIR` can be adjusted several time, but is executed relative to the previous value\r\n```Dockerfile\r\nWORKDIR /path/to/workdir\r\nWORKDIR relative/path\r\n```\r\n\r\nBeispiel:\r\n```Dockerfile\r\nWORKDIR /etc/\r\nWORKDIR user/app\r\n```",
       "line": 17
     },
     {
       "file": "examples/Dockerfile",
-      "description": "COPY instruction\r\n\r\nTODO",
+      "description": "COPY instruction\r\n\r\nThe COPY instruction copies new files or directories from <src> and adds them to the filesystem of the container at the path <dest>.\r\n\r\nIf source or destination contains whitespaces enclose it with \"\r\n\r\n```dockerfile\r\nCOPY test.txt relativeDir/\r\nCOPY test.txt /absoluteDir/\r\nCOPY hom* /mydir/\r\n```",
       "line": 20
     },
     {
       "file": "examples/Dockerfile",
-      "description": "ADD instruction\r\n\r\nTODO",
+      "description": "ADD instruction\r\n\r\nThe ADD instruction copies new files, directories or remote file URLs from <src> and adds them to the filesystem of the image at the path <dest>.\r\n\r\n```dockerfile\r\nADD hom* /mydir/\r\nADD git@git.example.com:foo/bar.git /bar\r\n```",
       "line": 23
     },
     {
       "file": "examples/Dockerfile",
-      "description": "ADD vs. COPY\r\n\r\nTODO",
+      "description": "ADD vs. COPY\r\n\r\nADD: has more features link copying from remote sources or automatically unpackung a compressed source\r\n\r\nBest Practice: Use COPY for moste of the copying and ADD only for tasks that require ADD features",
       "line": 24
     },
     {
       "file": "examples/Dockerfile",
-      "description": "RUN instruction\r\n\r\nTODO",
+      "description": "RUN instruction\r\n\r\nThe RUN instruction will execute any commands to create a new layer on top of the current image. The added layer is used in the next step in the Dockerfile\r\n\r\nTODO",
       "line": 26
     },
     {
       "file": "examples/Dockerfile",
-      "description": "EXPOSE instruction\r\n\r\nTODO",
+      "description": "EXPOSE instruction\r\n\r\nThe EXPOSE instruction informs Docker that the container listens on the specified network ports at runtime. \r\n\r\n- `EXPOSE` alone does not enable the container to be accessed through that port add `-p/--publish` to the `docker run`command. It functions as a type of documentation between the person who builds the image and the person who runs the container, about which ports are intended to be published.\r\n- `expose` tells the container to expect communication through that port\r\n- `publish` connects the exposed port to a port in the external world, opens the port for usage\r\n\r\n```dockerfile\r\nEXPOSE 80/udp\r\nEXPOSE 80/tcp\r\n```",
       "line": 30
     },
     {

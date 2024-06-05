@@ -8,10 +8,14 @@
 \usepackage{graphicx}
 \usepackage{comment}
 \usepackage{color}
+\usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{enumitem}
+%%\setlist[description]{leftmargin=\parindent,labelindent=\parindent}
 
 
 \newcommand{\code}[1]{\colorbox{gray!10}{\texttt{#1}}}
+\newcommand{\desclabel}[1]{\textcolor{cyan}{#1}}
 
 %% \usepackage[b]{beamer}
 \usemintedstyle{tango}
@@ -176,13 +180,9 @@
         \item Ein Dockerfile ist die Anleitung um ein Image zu erstellen.
         %% Mit einem Dockerfile kann man den Inhalt des Containers configurieren
         \item Image zu einem Dockerfile erstellen: \code{docker build .}
-        \item Image mit einem namen versehen: \code{-t name:version} (version ist optional)
         \item Standardmäßig hießt die Datei 'Dockerfile'
-        \item \code{-f <Dateiname>} für eigens benannte Dateien
         \item wieter Optionen mit \code{docker buildx build}
     \end{itemize}
-    \includegraphics{Bilder/Docker build.png}
-    
     %% TODO: Image zu Hello World ?
     \begin{figure}[h]
         \centering
@@ -190,6 +190,21 @@
         \caption{Plugin für die Arbeit mit Docker}
     \end{figure}
 
+\end{frame}
+
+\begin{frame}
+    \frametitle{docker build command}
+    \code{docker build [OPTIONS] PATH | URL | -} 
+    
+    Build an image from a Dockerfile
+    %% TODO: create macro for lable, create snippet \docu
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-f, --file string}, leftmargin=!]
+        \item[\desclabel{-f, --file string}] Name of the Dockerfile (default: "PATH/Dockerfile")
+        \item[\desclabel{-t, --tag stringArray}] Name and optionally a tag (format: "name:tag")
+        \item[\desclabel{PATH}] in most cases .
+    \end{description}
+    
 \end{frame}
 
 %% Ü: Wie sieht also ein Dockerfile aus
