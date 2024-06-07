@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  fastapi:
+    container_name: backend
+    build:
+      context: ./FastApi/
+      dockerfile: Dockerfile
+    ports:
+      - '8000:80'
+    volumes:
+      - ${PWD}/app/songs.json:/code/app/songs.json

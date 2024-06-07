@@ -319,7 +319,8 @@
 \begin{frame}[fragile]
     \codeTerminal
     \frametitle{Python FastAPI im Conatiner}
-    %% CodeTour zum Dockerfile
+    %% TODO: CodeTour zum Dockerfile
+    %% Mention Copy statments
     \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/FastAPI/Dockerfile}
     
     %% run mit volume und port
@@ -330,6 +331,7 @@
     \frametitle{Python FastAPI im Conatiner}
     \terminal
 \begin{minted}{bash}
+> cd examples/FastAPI
 > docker build -t fastapiapp .
 > docker run -d --name backend -p 8080:80 fastapiapp
 > docker exec -it backend bash
@@ -404,50 +406,104 @@
 
 \begin{minted}{bash}
 # Quiz: why is this not working
-> docker run -d --rm --name mycontainerbla \
+> docker run -d --rm --name backend \
     -v ${PWD}/app/songs.json:/app/songs.json \
     -p 8080:80 fastapiapp
 \end{minted}
     \pause
 \begin{minted}{bash}
-# Note: be aware of the working directory of your app, in this case code
-> docker run -d --rm --name mycontainer \
+# Note: be aware of the working directory of your app
+# in this case code 'WORKDIR /code'
+> docker run -d --rm --name backend \
     -v ${PWD}/app/songs.json:/code/app/songs.json \
     -p 8080:80 fastapiapp    
 \end{minted}
             
+\end{frame}
+
+\subsection{React}
+%% Überletung jetzt wollen wir natürlich auch noch eine Oberfläche
+\begin{frame}[t]
+    \frametitle{React}
+    %% TODO: Bild von Webseite
+    \includegraphics{Bilder/1200px-Docker-compose-logo.jpg}
 
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitle{React}
-    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/Dockerfile.cmd}
+    \frametitle{React - Dockerfile}
+    %% TODO: Code Tour zu dem File
+    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/React/Dockerfile}
 \end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{React - Dockerfile}
+    \terminal
+    %% TODO: Code Tour zu dem File
+\begin{minted}{bash}
+> cd examples/React
+> docker build -t reactapp:dev
+> docker run -it --rm --name frontenddev \
+    -v ${PWD}:/app -v /app/node_modules \
+    -e CHOKIDAR_USEPOLLING=true \
+    -p 3000:3000  reactapp:dev
+# open localhost:3000
+# Note: backend Container sollte laufen
+\end{minted}
+\end{frame}
+
+\subsection{Multistage Builds}
 \begin{frame}[t]
     \frametitle{Multistage builds}
+    Idee: Image aufeinanderaufbauende Teile teilen, zwischen den Teilen nur die nötigen Dinge kopieren
+
+    z.B. Stage 1: App compile, Stage 2: Compilierte App ausführen (kein Build context) 
+    Vorteile
     \begin{itemize}
-        \item 1
+        \item Smaller image size
+        \item faster build times
+        \item improved security (only runtime artifacts and dependencies)
+        \item code isolation and reusability
+        \item Easier debugging and troubleshooting
     \end{itemize} 
 \end{frame}
 
 \begin{frame}[fragile]
     \frametitle{React - Multistage}
-    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/Dockerfile.cmd}
+    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/React/Dockerfile.prod}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{React - Multistage}
+    \terminal
+\begin{minted}{bash}
+> docker build -f Dockerfile.prod -t frontend:prod .
+> docker run -it --rm --name frontend -p 1337:80 frontend:prod
+\end{minted}
+
+%% TODO: 
+Size comparison
+frontenddev:
+frontend:
+
 \end{frame}
 
 \begin{frame}[t]
     \frametitle{Dockerfile Best practices}
     \begin{itemize}
-        \item RUN commands
-        \item Order of COPY
-        \item Volumes
-        \item Multistage
+        \item \code{RUN} instructions mit \&\& zusammenfassen
+        \item \code{COPY} sinnvoll platzieren, damit Cache best möglich genutzt werden kann
+        \item \code{ADD} nur für \code{ADD} specifische Funktionen
+        \item Volumes und Mounts für persistententen Speicher nutzen
+        \item Multistage builds verwenden
     \end{itemize} 
 \end{frame}
 
+%% Pause alle Container stoppen, ggf kurz Docker Desktop zeigen
+
 \begin{frame}[t]
     \frametitle{Docker Compose}
+    %% TODO: 
     \begin{itemize}
         \item Vorteile
         \item UseCases
@@ -456,7 +512,15 @@
 
 \begin{frame}[fragile]
     \frametitle{Docker Compose zu Python}
-    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/Dockerfile.cmd}
+    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/FastAPI/docker-compose.yml}
+    \medskip
+    %% TODO: einheitliche port
+    \begin{minted}{bash}
+> docker run -d --rm --name backend \
+    -v ${PWD}/app/songs.json:/code/app/songs.json \
+    -p 8080:80 fastapiapp 
+        
+    \end{minted}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -494,32 +558,5 @@
         \item 
     \end{itemize} 
 \end{frame}
-
-\begin{comment}
-
-\begin{frame}[t]
-    \frametitle{title}
-    \begin{itemize}
-        \item 1
-    \end{itemize} 
-\end{frame}
-
-\begin{frame}[fragile]
-    \frametitle{title}
-    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/Dockerfile.cmd}
-\end{frame}
-
-\begin{wrapfigure}{l}{0.25\textwidth}
-    \centering
-    \includegraphics[width=0.25\textwidth]{contour}
-\end{wrapfigure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{spiral}
-    \caption{}
-\end{figure}
-    
-\end{comment}
 
 \end{document}
