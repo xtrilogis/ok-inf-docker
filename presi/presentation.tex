@@ -29,6 +29,14 @@
     \includegraphics[width=1.3cm]{Bilder/terminal.png}
     \end{textblock*}
 }
+\newcommand{\codeTerminal}{
+    \begin{textblock*}{1.3cm}(11cm,0.5cm) % {block width}(xcoord, ycoord)
+        \includegraphics[width=1.3cm]{Bilder/CodeTour.png}
+    \end{textblock*}
+    \begin{textblock*}{1.3cm}(9.5cm,0.5cm) % {block width}(xcoord, ycoord)
+        \includegraphics[width=1.3cm]{Bilder/terminal.png}
+    \end{textblock*}
+}
 
 \usemintedstyle{tango}
 \pagenumbering{roman}
@@ -42,6 +50,7 @@
 %% TODO: layout element, dass kennzeichnet, wann man ins terminal wechselt vgl. "Vorlesung" bei EAE
 %% TODO: how to make one list item without overhead -> macro?
 %% einheitliche Sprache
+%% teerminal Bild gleiches Format
 
 \begin{frame}[plain]
     \vfill
@@ -306,18 +315,108 @@
     \end{description}
 \end{frame}
 
+\subsection{Python (FastAPI)}
 \begin{frame}[fragile]
-    \frametitle{Python bsp}
-    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/Dockerfile.cmd}
+    \codeTerminal
+    \frametitle{Python FastAPI im Conatiner}
+    %% CodeTour zum Dockerfile
+    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/FastAPI/Dockerfile}
+    
     %% run mit volume und port
     %% start, stop, rm
 \end{frame}
 
-\begin{frame}[t]
-    \frametitle{Volumes}
+\begin{frame}[fragile]
+    \frametitle{Python FastAPI im Conatiner}
+    \terminal
+\begin{minted}{bash}
+> docker build -t fastapiapp .
+> docker run -d --name backend -p 8080:80 fastapiapp
+> docker exec -it backend bash
+> docker stop backend
+> docker start backend
+> docker rm backend ??
+\end{minted}
+    %% stoppen
+    %% Überleitung: beim zweiten start Songs hinzugügen, 
+    %% nach dem remove neuen Container, der hat die Songs nicht
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Python FastAPI im Conatiner}
+    \terminal
     \begin{itemize}
-        \item 
-    \end{itemize} 
+        \item Option 1: json anpassen, Image neu erstellen
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Python FastAPI im Conatiner}
+    \terminal
+    \begin{itemize}
+        \item Option 1: json anpassen, Image neu erstellen
+        \item Option 2: changes commiten
+    \end{itemize}
+
+\begin{minted}{bash}
+> docker commit mycontainer fastapiapp:v2
+> docker run -d --name backend2 --rm \
+    -p 8000:80 fastapiapp:v2
+# open localhost:8000/docs -> get_songs() hat neue Songs
+
+> docker run -d --name backend --rm \
+    -p 8080:80 fastapiapp
+# open localhost:8080/docs -> get_songs() hat keine
+\end{minted}
+\end{frame}
+
+\subsection{Volumes und Mounts}
+\begin{frame}[t]
+    \frametitle{Volumes und Mounts}
+    \begin{itemize}
+        \item Docker containers are stateless by default, data inside is lost after shutdown.
+        \item both map data/storage from the host machine to data/storage in the Container for persistent storage.
+    \end{itemize} \pause
+    \begin{block}{Volume}
+        \begin{itemize}
+            \item are managed by Docker and stored default at \code{var/lib/docker/volumes/VOLUMENAME}
+            \item don't increase the size of the containers
+            \item simplify and allow sharing data between containers
+        \end{itemize}
+    \end{block} \pause
+    \begin{block}{Mount}
+        \begin{itemize}
+            \item a file or directory on the host machine is attached to the containers filesystem
+            \item dependant on the host machine while volumes are managed by docker
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Python FastAPI im Conatiner mit Volume}
+    \terminal
+    \begin{itemize}
+        \item Option 1: json anpassen, Image neu erstellen
+        \item Option 2: changes commiten
+        \item Option 3: Volume, wenn man die json changes behalten möchte, aber den container per se nicht
+    \end{itemize}
+
+\begin{minted}{bash}
+# Quiz: why is this not working
+> docker run -d --rm --name mycontainerbla \
+    -v ${PWD}/app/songs.json:/app/songs.json \
+    -p 8080:80 fastapiapp
+\end{minted}
+    \pause
+\begin{minted}{bash}
+# Note: be aware of the working directory of your app, in this case code
+> docker run -d --rm --name mycontainer \
+    -v ${PWD}/app/songs.json:/code/app/songs.json \
+    -p 8080:80 fastapiapp    
+\end{minted}
+            
+
 \end{frame}
 
 \begin{frame}[fragile]
