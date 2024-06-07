@@ -408,7 +408,7 @@
 # Quiz: why is this not working
 > docker run -d --rm --name backend \
     -v ${PWD}/app/songs.json:/app/songs.json \
-    -p 8080:80 fastapiapp
+    -p 8000:80 fastapiapp
 \end{minted}
     \pause
 \begin{minted}{bash}
@@ -416,7 +416,7 @@
 # in this case code 'WORKDIR /code'
 > docker run -d --rm --name backend \
     -v ${PWD}/app/songs.json:/code/app/songs.json \
-    -p 8080:80 fastapiapp    
+    -p 8000:80 fastapiapp    
 \end{minted}
             
 \end{frame}
@@ -518,26 +518,44 @@ frontend:
     \begin{minted}{bash}
 > docker run -d --rm --name backend \
     -v ${PWD}/app/songs.json:/code/app/songs.json \
-    -p 8080:80 fastapiapp 
+    -p 8000:80 fastapiapp 
         
     \end{minted}
 \end{frame}
 
 \begin{frame}[fragile]
     \frametitle{Docker Compose Webapp}
-    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/Dockerfile.cmd}
+    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/React/docker-compose.prod.yml}
+\begin{minted}{bash}
+> docker run -it --rm --name frontend -p 1337:80 frontend:prod
+> docker-compose -f docker-compose.prod.yml up -d --build
+    
+\end{minted}
 \end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{Docker Compose}
+    %% TODO: ZEile mit image statt build
+    \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/docker-compose.yml}
+\begin{minted}{bash}
+> docker-compose up
+    
+\end{minted}
+\end{frame}
+
+%% TODO: weitere commands
+%
 \begin{frame}[t]
-    \frametitle{title}
+    \frametitle{Andere UseCases}
     \begin{itemize}
         \item OpenDrone Map
-        \item [Nathalies Kubernetes Arbeit]
-        \item [Felix Hiwi arbeit]
-        \item [deply your app on a cloud hosted frame work]
+        \item Nathalies Kubernetes Arbeit
+        \item Felix Hiwi arbeit
+        \item deply your app on a cloud hosted frame work
     \end{itemize}
 \end{frame}
 
+%% Cheatsheet für alle genanten commands, build, run, commit, ps, rm, exec, start, stop
 \begin{frame}[t]
     \frametitle{Cheatsheet}
     \begin{itemize}
