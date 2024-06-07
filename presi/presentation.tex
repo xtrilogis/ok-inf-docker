@@ -12,6 +12,7 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{enumitem}
+\usepackage{caption}
 \setlist[itemize]{label=\textbullet, labelsep=1em, leftmargin=2em}
 \usepackage{caption}
 
@@ -55,6 +56,36 @@
 \begin{frame}[plain]
     \frametitle{Gliederung}
     \tableofcontents
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Disclaimer}
+    \begin{itemize}
+        \item Bei weitem nicht alles
+        \item Nur Allgemeine Auszüge 
+    \end{itemize}
+
+    \begin{textblock*}{4.5cm}(1.5cm,4cm) % {block width}(xcoord, ycoord)
+        \begin{figure}
+            \includegraphics[width=1.5cm]{Bilder/terminal.png}
+            \captionsetup{justification=centering}
+            \caption*{commands im Terminal ausführen\\ Ordner \code{examples}, wenn nichts da steht}
+        \end{figure}
+
+    \end{textblock*}
+
+    \begin{textblock*}{4.5cm}(7.2cm,4cm) % {block width}(xcoord, ycoord)
+        \begin{figure}
+            \includegraphics[width=1.5cm]{Bilder/CodeTour.png}
+            \centering
+            \captionsetup{justification=centering}
+            \caption*{CodeTour (VSCode Plugin)\\Code im Repo}
+        \end{figure}
+    
+    \end{textblock*}
+
+
+
 \end{frame}
 
 \subsection{Einführung}
@@ -248,6 +279,33 @@
 \end{frame}
 %% vllt Docker mit ubuntu for exec, it, start, stop, name
 
+\subsection{Einfache Container}
+\begin{frame}[c]
+    \frametitle{Zusammenhang der Docker Komponenten}
+    %% TODO: Zusammenhang Image haben wir jetzt, wie wird aus dem Image ein Conatiner
+    \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf_dark.png}
+\end{frame}
+
+\begin{frame}
+    \frametitle{docker run command}
+    \code{docker run [OPTIONS] IMAGE [COMMAND] [ARG...]}
+
+    \-  \ Create and run a new container from image
+
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{--mount mountm}, leftmargin=!]
+        \item[\desclabel{-d}] Detach from terminal | run in background
+        \item[\desclabel{-e}] Set environment variables
+        \item[\desclabel{-it}] Interactive terminal, enter container terminal
+        \item[\desclabel{--mount mount}] Attach a filesystem mount to the container
+        \item[\desclabel{-p [host]:[port]}] Publish a container's port(s) to the host
+        \item[\desclabel{-P}] Publish all exposed ports
+        \item[\desclabel{--rm}] Automatically remove the container when it exits
+        \item[\desclabel{-v, --volume list}] Bind mount a volume
+        \item[\desclabel{-w}] Provides an execution directory inside the container
+    \end{description}
+\end{frame}
+
 \begin{frame}[fragile]
     \frametitle{Python bsp}
     \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/Dockerfile.cmd}
@@ -333,7 +391,7 @@
     \frametitle{Coole Quellen und so weiter}
     \begin{itemize}
         \item \href{https://www.docker.com/}{https://www.docker.com/}
-        \item \href{https://docs.docker.com/get-started/}{https://docs.docker.com/get-started/}
+        \item Offizielle Dokumentation: \href{https://docs.docker.com/get-started/}{https://docs.docker.com/get-started/}
         \item 
     \end{itemize} 
 \end{frame}
