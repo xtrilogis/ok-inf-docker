@@ -1,23 +1,34 @@
-\documentclass[22pt,handout]{beamer}
+\documentclass[22pt]{beamer}
 % \documentclass[handout]{beamer}
 % add theme and color theme https://www.overleaf.com/learn/latex/Beamer#Reference_guide
-\setbeamertemplate{navigation symbols}{arguments} % hides navigation buttons
+\setbeamertemplate{navigation symbols}{} % hides navigation buttons
 \setbeamertemplate{footline}[frame number]
 \usepackage[utf8]{inputenc}
 \usepackage{minted}
 \usepackage{graphicx}
+\usepackage[absolute,overlay]{textpos}
 \usepackage{comment}
 \usepackage{color}
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{enumitem}
-%%\setlist[description]{leftmargin=\parindent,labelindent=\parindent}
+\setlist[itemize]{label=\textbullet, labelsep=1em, leftmargin=2em}
+\usepackage{caption}
 
 
 \newcommand{\code}[1]{\colorbox{gray!10}{\texttt{#1}}}
 \newcommand{\desclabel}[1]{\textcolor{cyan}{#1}}
+\newcommand{\codeTour}{
+    \begin{textblock*}{1.3cm}(11cm,0.5cm) % {block width}(xcoord, ycoord)
+    \includegraphics[width=1.3cm]{Bilder/CodeTour.png}
+    \end{textblock*}
+}
+\newcommand{\terminal}{
+    \begin{textblock*}{1.3cm}(11cm,0.5cm) % {block width}(xcoord, ycoord)
+    \includegraphics[width=1.3cm]{Bilder/terminal.png}
+    \end{textblock*}
+}
 
-%% \usepackage[b]{beamer}
 \usemintedstyle{tango}
 \pagenumbering{roman}
 
@@ -29,9 +40,9 @@
 
 %% TODO: layout element, dass kennzeichnet, wann man ins terminal wechselt vgl. "Vorlesung" bei EAE
 %% TODO: how to make one list item without overhead -> macro?
-%% TODO: oneline minted
+%% einheitliche Sprache
 
-\begin{frame}[t]
+\begin{frame}[plain]
     \vfill
     \begin{center}
         \includegraphics[width=1\textwidth]{Bilder/docker-how.png}
@@ -41,10 +52,12 @@
 
 \maketitle
 
-\begin{frame}{Gliederung}
+\begin{frame}[plain]
+    \frametitle{Gliederung}
     \tableofcontents
 \end{frame}
 
+\subsection{Einführung}
 \begin{frame}
     \frametitle{Wiso, Weshalb, Warum?}
     \begin{center}
@@ -70,43 +83,29 @@
     }
     \only<3>{\begin{figure}[h]
         \centering
-        \includegraphics[width=0.8\textwidth]{Bilder/wettbewerb.png}
-        \caption{Wettbewerb zum Icon für Docker}
+        \includegraphics[width=0.95\textwidth]{Bilder/wettbewerb.png}
+        \caption*{Wettbewerb zum Icon für Docker}
     \end{figure}
     }
 \end{frame}
 
 \begin{frame}[t]
     \frametitle{Was ist Docker?}
-    %% TODO: good definition or leave out
-    \begin{itemize}
-        \item ? (vllt nicht als Folie sondern nur was erwähnen)
-        \item Toolbox
-        \item sandbox
-        \item configurierbare Umgebung
-    \end{itemize} 
-    %% bild
+    \begin{block}{Docker}
+        freie Software zur Isolierung von Anwendungen\newline
+        Containervirtualisierung\newline
+        "light weight" Virtual Maschine\newline
+    \end{block}
     \begin{figure}[h]
         \centering
-        \includegraphics[width=0.5\textwidth]{Bilder/Docker Concept.png}
+        \includegraphics[width=0.9\textwidth]{Bilder/Docker Concept.png}
     \end{figure}
 \end{frame}
 
-\begin{frame}[t]
-    \frametitle{Was ist Docker?}
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.5\textwidth]{Bilder/Docker-Ablauf.png}
-        \caption{Zusammenhang der Docker Komponenten}
-    \end{figure}
-\end{frame}
 
 \begin{frame}[t]
     \frametitle{Wichtige Begriffe}
-    \begin{block}{Docker}
-        freie Software zur Isolierung von Anwendungen mit Hilfe von     Docker
-        Containervirtualisierung
-    \end{block}
+    
     \begin{block}{Container}
         Umgebung in der die tatsächliche Anwendung läuft
     \end{block}
@@ -120,136 +119,132 @@
         z.B. Docker Hub, EAC....
         Ort an dem viele verschindene Images gespeichert und geteilt werden können
     \end{block}
-    %% \begin{block}{Docker Compose}
-    %%    - Orchestrierungstool (?), Wrapper für einen oder mehrere Container
-    %%\end{block}
+    \begin{block}{Docker Compose}
+        Orchestrierungstool für Dockerfile\newline
+        Wrapper für einen oder mehrere Container
+    \end{block}
     %%\begin{block}{Docker Desktop}
     %%    - UI für alles was man in der CLI machen kann (?) %% TODO: 
     %%\end{block}
 \end{frame}
 
+\begin{frame}[c]
+    \frametitle{Zusammenhang der Docker Komponenten}
+        \includegraphics<1>[width=1\textwidth]{Bilder/Docker-Ablauf.png}
+        \includegraphics<2>[width=1\textwidth]{Bilder/dockercommand.png}
+\end{frame}
+
 \begin{frame}[t]
     \frametitle{Wie kreige ich dieses "Docker"?}
-    \includegraphics[width=0.5\textwidth]{Bilder/Installation.png}
+    \includegraphics[width=0.9\textwidth]{Bilder/Installation.png}
+
     \href{https://docs.docker.com/engine/install}{Doku}
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitle{Hello World} %% winkende Hand?
-    \begin{minted}[fontsize=\footnotesize, frame=lines, fontfamily=terminus]{bash}
-        $ docker -v
-        $ docker --help
-        $ docker run hello-world
+    \frametitle{Hello World}
+    \terminal
+    \begin{minted}{bash}
+    > docker -v
+    > docker --help
+    > docker run hello-world
     \end{minted}
-
-    Ab ins Terminal
 \end{frame}
 
-\begin{frame}[fragile]
-    \frametitle{docker run} 
-    \begin{minted}[fontsize=\footnotesize, frame=lines, fontfamily=terminus]{bash}
-        $ docker 
-            adf
-            sadf
-    \end{minted}
-
-    \includegraphics{Bilder/Docker build.png}
-\end{frame}
-
+\subsection{Dockerfile}
 \begin{frame}[c]
-    \frametitle{Was ist Docker?}
-    %% TODO: highlight so that dockerfile is highlighted
-    \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf.png}
+    \frametitle{Zusammenhang der Docker Komponenten}
+    \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf_dark.png}
 \end{frame}
-
-\begin{comment}
-    \begin{frame}[t]
-    \frametitle{Basic commands}
-    \begin{itemize}
-        \item docker run
-        \item docker ps / docker ps -a
-        \item 
-    \end{itemize} 
-\end{frame}
-\end{comment}
-
 
 \begin{frame}[fragile]
     \frametitle{Dockerfile}
     \begin{itemize}
         \item Ein Dockerfile ist die Anleitung um ein Image zu erstellen.
         %% Mit einem Dockerfile kann man den Inhalt des Containers configurieren
-        \item Image zu einem Dockerfile erstellen: \code{docker build .}
         \item Standardmäßig hießt die Datei 'Dockerfile'
         \item wieter Optionen mit \code{docker buildx build}
     \end{itemize}
-    %% TODO: Image zu Hello World ?
     \begin{figure}[h]
         \centering
-        \includegraphics[width=0.5\textwidth]{Bilder/Hadolint.png}
-        \caption{Plugin für die Arbeit mit Docker}
+        \includegraphics[width=0.6\textwidth]{Bilder/Hadolint.png}
+        \caption*{Plugin für die Arbeit mit Docker}
     \end{figure}
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
     \frametitle{docker build command}
     \code{docker build [OPTIONS] PATH | URL | -} 
     
-    Build an image from a Dockerfile
-    %% TODO: create macro for lable, create snippet \docu
+    \-  \ Build an image from a Dockerfile
+
     \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-f, --file string}, leftmargin=!]
         \item[\desclabel{-f, --file string}] Name of the Dockerfile (default: "PATH/Dockerfile")
         \item[\desclabel{-t, --tag stringArray}] Name and optionally a tag (format: "name:tag")
         \item[\desclabel{PATH}] in most cases .
     \end{description}
+
+    Beispiele: %% TODO: test commands
+    \begin{minted}[fontsize=\small]{bash}
+    docker build . # 'Dockerfile' im aktuellen Ordner
+    docker build -t myimage:v1 . 
+    docker build -f Docker.cmd . 
+    docker build ./examples/FastAPI/Dockerfile
+    \end{minted}
     
 \end{frame}
 
 %% Ü: Wie sieht also ein Dockerfile aus
 \begin{frame}[fragile]
     \frametitle{Dockerfile}
-    
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.5\textwidth]{Bilder/mobydocker.jpg}
-        \caption{Code Tour}
-    \end{figure}
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.5\textwidth]{Bilder/mobydocker.jpg}
-        \caption{Beispiel Dockerfile}
-    \end{figure}
-    \href{https://docs.docker.com/reference/dockerfile/#overview}{Doku}
+    \codeTour
+
+    Beispiel \code{Dockerfile}: 
+    \inputminted[fontsize=\footnotesize, frame=lines]{Dockerfile}{../examples/Dockerfile}\medskip 
+    Weitere Informationen und Instruction
+    \href{https://docs.docker.com/reference/dockerfile/#overview}{https://docs.docker.com/reference/dockerfile/}
 \end{frame}
 
 \begin{frame}[fragile]
     \frametitle{CMD vs. ENTRYPOINT}
-    \begin{minted}[fontsize=\footnotesize, frame=lines]{bash}
-        docker build -t example:cmd -f Dockerfile.cmd .
-        docker build -t example:entry -f Dockerfile.entry .
-
-        docker run example:cmd
-        docker run example:cmd hello
-        docker run example:entry hello
+    \terminal
+    \begin{minted}{bash}
+    > docker build -t example:cmd -f Dockerfile.cmd .
+    > docker build -t example:entry -f Dockerfile.entry .
+    \end{minted} 
+    \pause
+    \begin{minted}{bash}
+    > docker run example:cmd
+    > docker run example:cmd hello
+    > docker run example:entry hello        
     \end{minted}
-    CMD: wird überschrieben
-    EP: bestimmte den command, argumente können hinzugefügt werden
-    % mehrere EP commands
-    beide: bestimmen, was nach dem start ausgeführt wird
+    \pause \medskip
+    \begin{itemize}
+        \item beide definieren den, was nach Container start ausgeführt wird
+        \item \code{CMD} kann überschrieben werden
+        \item \code{ENTRYPOINT} bestimmt den command, neue Parameter werden angehangen
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitle{RUN}
-    \begin{minted}[fontsize=\footnotesize, frame=lines]{bash}
-        docker build -t example:single -f Dockerfile.single .
-        docker build -t example:multi -f Dockerfile.multi .
+    \frametitle{RUN} %% TODO: Dockerfiles hier mit einbinden??
+    \begin{minted}{bash}
+    > docker build -t example:single -f Dockerfile.single .
+    > docker build -t example:multi -f Dockerfile.multi .
 
-        docker ps -a
-        docker images
+    # Entstandene Images anschauen
+    > docker ps -a
+    > docker images
     \end{minted}
-    spart speicher schnellerer build
+    \pause\medskip
+    \begin{itemize}
+        \item pro \code{RUN} baut Docker einen Layer
+        \item Layer werden gecached und nach Möglichkeit wiederverwendet
+        \item versucht \code{RUN} instructions zu verbinden
+        \item verbessert built-time und Image größe
+    \end{itemize}
 \end{frame}
 %% vllt Docker mit ubuntu for exec, it, start, stop, name
 
