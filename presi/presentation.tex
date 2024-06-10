@@ -26,7 +26,7 @@
 }
 \newcommand{\terminal}{
     \begin{textblock*}{1.3cm}(11cm,0.5cm) % {block width}(xcoord, ycoord)
-    \includegraphics[width=1.3cm]{Bilder/terminal.png}
+    \includegraphics[width=1.3cm]{Bilder/terminal2.png}
     \end{textblock*}
 }
 \newcommand{\codeTerminal}{
@@ -34,9 +34,10 @@
         \includegraphics[width=1.3cm]{Bilder/CodeTour.png}
     \end{textblock*}
     \begin{textblock*}{1.3cm}(9.5cm,0.5cm) % {block width}(xcoord, ycoord)
-        \includegraphics[width=1.3cm]{Bilder/terminal.png}
+        \includegraphics[width=1.3cm]{Bilder/terminal2.png}
     \end{textblock*}
 }
+\newcommand{\todo}[1]{\begingroup\sethlcolor{red}\textcolor{white}{\hl{#1}}\endgroup}
 
 \usemintedstyle{tango}
 \pagenumbering{roman}
@@ -62,21 +63,17 @@
 
 \maketitle
 
-\begin{frame}[plain]
-    \frametitle{Gliederung}
-    \tableofcontents
-\end{frame}
 
 \begin{frame}[t]
     \frametitle{Disclaimer}
     \begin{itemize}
-        \item Bei weitem nicht alles
-        \item Nur Allgemeine Auszüge 
+        \item bei weitem nicht alles zum Thema Docker
+        \item nur Allgemeine Grundlage
     \end{itemize}
 
     \begin{textblock*}{4.5cm}(1.5cm,4cm) % {block width}(xcoord, ycoord)
         \begin{figure}
-            \includegraphics[width=1.5cm]{Bilder/terminal.png}
+            \includegraphics[width=1.5cm]{Bilder/terminal2.png}
             \captionsetup{justification=centering}
             \caption*{commands im Terminal ausführen\\ Ordner \code{examples}, wenn nichts da steht}
         \end{figure}
@@ -93,8 +90,11 @@
     
     \end{textblock*}
 
+\end{frame}
 
-
+\begin{frame}[plain]
+    \frametitle{Gliederung}
+    \tableofcontents
 \end{frame}
 
 \subsection{Einführung}
@@ -116,6 +116,7 @@
 
 \begin{frame}[t]
     \frametitle{Wer ist Moby Dock?}\pause
+    %% TODO: witziger
     \only<2>{\begin{figure}[h]
         \centering
         \includegraphics[width=0.8\textwidth]{Bilder/mobydocker.jpg}
@@ -148,13 +149,13 @@
     
     \begin{block}{Container}
         Umgebung in der die tatsächliche Anwendung läuft
-    \end{block}
+    \end{block} 
     \begin{block}{Image}
         Blaupausen, um einen Container zu erstellen
     \end{block}
     \begin{block}{Dockerfile}
         Anleitung, um ein Image zu erstellen
-    \end{block}
+    \end{block}\pause
     \begin{block}{Registry}
         z.B. Docker Hub, EAC....
         Ort an dem viele verschindene Images gespeichert und geteilt werden können
@@ -174,21 +175,21 @@
         \includegraphics<2>[width=1\textwidth]{Bilder/dockercommand.png}
 \end{frame}
 
-\begin{frame}[t]
+\begin{frame}[c]
     \frametitle{Wie kreige ich dieses "Docker"?}
     \includegraphics[width=0.9\textwidth]{Bilder/Installation.png}
 
     \href{https://docs.docker.com/engine/install}{Doku}
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[fragile,t]
     \frametitle{Hello World}
     \terminal
-    \begin{minted}{bash}
-    > docker -v
-    > docker --help
-    > docker run hello-world
-    \end{minted}
+\begin{minted}{bash}
+> docker -v
+> docker --help
+> docker run hello-world
+\end{minted}
 \end{frame}
 
 \subsection{Dockerfile}
@@ -200,16 +201,26 @@
 \begin{frame}[fragile]
     \frametitle{Dockerfile}
     \begin{itemize}
-        \item Ein Dockerfile ist die Anleitung um ein Image zu erstellen.
+        \item Anleitung um ein Image zu erstellen
         %% Mit einem Dockerfile kann man den Inhalt des Containers configurieren
-        \item Standardmäßig hießt die Datei 'Dockerfile'
-        \item wieter Optionen mit \code{docker buildx build}
+        \item hießt standardmäßig 'Dockerfile'
     \end{itemize}
+    \codeTour
+
+    Beispiel \code{Dockerfile}: 
+    \inputminted[fontsize=\footnotesize, frame=lines]{Dockerfile}{../examples/Dockerfile}\medskip 
+    \pause
+    \only<2>{
     \begin{figure}[h]
         \centering
         \includegraphics[width=0.6\textwidth]{Bilder/Hadolint.png}
         \caption*{Plugin für die Arbeit mit Docker}
     \end{figure}
+    }
+    \pause
+    Weitere Informationen und Instruction
+    \href{https://docs.docker.com/reference/dockerfile/#overview}{https://docs.docker.com/reference/dockerfile/}
+
 
 \end{frame}
 
@@ -221,10 +232,12 @@
 
     \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-f, --file string}, leftmargin=!]
-        \item[\desclabel{-f, --file string}] Name of the Dockerfile (default: "PATH/Dockerfile")
         \item[\desclabel{-t, --tag stringArray}] Name and optionally a tag (format: "name:tag")
-        \item[\desclabel{PATH}] in most cases .
+        \item[\desclabel{-f, --file string}] Name of the Dockerfile (default: "PATH/Dockerfile")
     \end{description}
+    {\small weitere Optionen mit \code{docker buildx build}}\\
+    \code{PATH} Pfad zum Dockerfile, meistens \code{.}
+
 
     Beispiele: %% TODO: test commands
     \begin{minted}[fontsize=\small]{bash}
@@ -236,30 +249,56 @@
     
 \end{frame}
 
-%% Ü: Wie sieht also ein Dockerfile aus
 \begin{frame}[fragile]
-    \frametitle{Dockerfile}
-    \codeTour
-
-    Beispiel \code{Dockerfile}: 
-    \inputminted[fontsize=\footnotesize, frame=lines]{Dockerfile}{../examples/Dockerfile}\medskip 
-    Weitere Informationen und Instruction
-    \href{https://docs.docker.com/reference/dockerfile/#overview}{https://docs.docker.com/reference/dockerfile/}
+    \frametitle{RUN}
+    \terminal
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.single}
+        \end{column}
+        \begin{column}{0.5\textwidth}  %%<--- here
+            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.multi}
+        \end{column}
+    \end{columns}
+    \medskip
+\begin{minted}{bash}
+> docker build -t example:single -f Dockerfile.single .
+> docker build -t example:multi -f Dockerfile.multi .
+# Entstandene Images anschauen
+> docker images
+\end{minted}
+    \pause\medskip
+    \begin{itemize}
+        \item pro \code{RUN} baut Docker einen Layer
+        \item Layer werden gecached und nach Möglichkeit wiederverwendet
+        \item verbinden von \code{RUN} instructions verbessert built time und Image Größe
+    \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[fragile, t]
     \frametitle{CMD vs. ENTRYPOINT}
+    %% TODO: pre build images
     \terminal
-    \begin{minted}{bash}
-    > docker build -t example:cmd -f Dockerfile.cmd .
-    > docker build -t example:entry -f Dockerfile.entry .
-    \end{minted} 
-    \pause
-    \begin{minted}{bash}
-    > docker run example:cmd
-    > docker run example:cmd hello
-    > docker run example:entry hello        
-    \end{minted}
+    \begin{columns}[t]
+        \begin{column}{0.5\textwidth}
+            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.cmd}
+        \end{column}
+        \begin{column}{0.5\textwidth}  %%<--- here
+            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.entry}
+        \end{column}
+    \end{columns}
+    \medskip
+\begin{minted}[fontsize=\scriptsize]{bash}
+> docker build -t example:cmd -f Dockerfile.cmd .
+> docker build -t example:entry -f Dockerfile.entry .
+\end{minted} 
+\pause
+%% demo docker run example:cmd hello
+\begin{minted}{bash}
+> docker run example:cmd
+> docker run example:cmd echo hello
+> docker run example:entry hello        
+\end{minted}
     \pause \medskip
     \begin{itemize}
         \item beide definieren den, was nach Container start ausgeführt wird
@@ -268,24 +307,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-    \frametitle{RUN} %% TODO: Dockerfiles hier mit einbinden??
-    \begin{minted}{bash}
-    > docker build -t example:single -f Dockerfile.single .
-    > docker build -t example:multi -f Dockerfile.multi .
 
-    # Entstandene Images anschauen
-    > docker ps -a
-    > docker images
-    \end{minted}
-    \pause\medskip
-    \begin{itemize}
-        \item pro \code{RUN} baut Docker einen Layer
-        \item Layer werden gecached und nach Möglichkeit wiederverwendet
-        \item versucht \code{RUN} instructions zu verbinden
-        \item verbessert built-time und Image größe
-    \end{itemize}
-\end{frame}
 %% vllt Docker mit ubuntu for exec, it, start, stop, name
 
 \subsection{Einfache Container}
@@ -342,6 +364,13 @@
     %% stoppen
     %% Überleitung: beim zweiten start Songs hinzugügen, 
     %% nach dem remove neuen Container, der hat die Songs nicht
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{title}
+    \begin{itemize}
+        \item Problem ohne Volume
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
