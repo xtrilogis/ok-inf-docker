@@ -21,10 +21,10 @@ export function AddSongForm({ fetchSongs }: {fetchSongs: any}){
     }
   
     const validateInput = () => {
-      if (song.title == ""){
+      if (song.title === ""){
         setState({err: "No title"})
         return false
-      } else if (song.artist == ""){
+      } else if (song.artist === ""){
         setState({err: "No artist"})
         return false
       } else if (song.year > 2100 || song.year < 1000 ){

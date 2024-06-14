@@ -4,9 +4,10 @@ services:
   fastapi:
     container_name: backend
     build:
-      context: ./FastApi/
+      context: .
       dockerfile: Dockerfile
+    # image: fastapiapp:v2
     ports:
       - '8000:80'
     volumes:
-      - ${PWD}/app/songs.json:/code/app/songs.json
+      - ./app/songs.json:/code/app/songs.json

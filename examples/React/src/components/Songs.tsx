@@ -3,13 +3,11 @@ import { Stack } from "@chakra-ui/react";
 import { AddSongForm } from "./AddSongForm";
 import { SongItem } from "./SongItem";
 
-{/**useState managing local state, useEffect perform Operations such as data fetching*/}
-
 const SongsContext = React.createContext({
     songs: [], fetchSongs: () => {}
 })
 
-{/**Fetch Song information from FastAPI 'Server' */}
+ // Fetch Song information from FastAPI 'Server'
 export default function Songs(){
     const [songs, setSongs] = useState([]);
     const fetchSongs = async () => {

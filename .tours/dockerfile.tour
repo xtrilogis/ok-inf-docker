@@ -29,7 +29,7 @@
     },
     {
       "file": "examples/Dockerfile.praesi",
-      "description": "WORKDIR instruction\r\n\r\nSet the working directory for any subsequent instructions as well as for later when running the image (?) TODO\r\n- `WORKDIR` affects `RUN, CMD, ENTRYPOINT, COPY, ADD`\r\n- `WORKDIR` can be adjusted several time, but is executed relative to the previous value\r\n```Dockerfile\r\nWORKDIR /path/to/workdir\r\nWORKDIR relative/path\r\n```\r\n\r\nBeispiel:\r\n```Dockerfile\r\nWORKDIR /etc/\r\nWORKDIR user/app\r\n```",
+      "description": "WORKDIR instruction\r\n\r\nSet the working directory for any subsequent instructions as well as for later when running the image\r\n- `WORKDIR` affects `RUN, CMD, ENTRYPOINT, COPY, ADD`\r\n- `WORKDIR` can be adjusted several time, but is executed relative to the previous value\r\n```Dockerfile\r\nWORKDIR /path/to/workdir\r\nWORKDIR relative/path\r\n```\r\n\r\nBeispiel:\r\n```Dockerfile\r\nWORKDIR /etc/\r\nWORKDIR user/app\r\n```",
       "line": 17
     },
     {

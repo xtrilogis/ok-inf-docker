@@ -1,3 +1,3 @@
-FROM alpine:lastest
+FROM alpine:latest
 
 CMD [ "echo", "Hello World" ]

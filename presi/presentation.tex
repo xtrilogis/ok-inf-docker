@@ -205,9 +205,9 @@
         %% Mit einem Dockerfile kann man den Inhalt des Containers configurieren
         \item hießt standardmäßig 'Dockerfile'
     \end{itemize}
-    \codeTour
+    \only<3>{\codeTour}
 
-    Beispiel \code{Dockerfile}: 
+    ein beispielhaftes \code{Dockerfile}: 
     \inputminted[fontsize=\footnotesize, frame=lines]{Dockerfile}{../examples/Dockerfile}\medskip 
     \pause
     \only<2>{
@@ -224,6 +224,14 @@
 
 \end{frame}
 
+
+%% Überleitung: Wie kommt man jetzt vom Dockerfile zum Image
+\begin{frame}[c]
+    \frametitle{Zusammenhang der Docker Komponenten}
+    %% TODO: Gimp, Hightlight image as well, and mark Arrow
+    \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf_dark.png}
+\end{frame}
+
 \begin{frame}[fragile]
     \frametitle{docker build command}
     \code{docker build [OPTIONS] PATH | URL | -} 
@@ -234,22 +242,23 @@
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-f, --file string}, leftmargin=!]
         \item[\desclabel{-t, --tag stringArray}] Name and optionally a tag (format: "name:tag")
         \item[\desclabel{-f, --file string}] Name of the Dockerfile (default: "PATH/Dockerfile")
+        \item[...] 
     \end{description}
-    {\small weitere Optionen mit \code{docker buildx build}}\\
-    \code{PATH} Pfad zum Dockerfile, meistens \code{.}
+    
+    \code{PATH} Pfad zum Build Kontext (Ordner), meistens \code{.}
 
-
-    Beispiele: %% TODO: test commands
     \begin{minted}[fontsize=\small]{bash}
     docker build . # 'Dockerfile' im aktuellen Ordner
     docker build -t myimage:v1 . 
     docker build -f Docker.cmd . 
-    docker build ./examples/FastAPI/Dockerfile
+    docker build FastAPI
     \end{minted}
-    
+    \medskip
+
+    {\small weitere Optionen mit \code{docker buildx build}}
 \end{frame}
 
-\begin{frame}[fragile]
+\begin{frame}[fragile, b]
     \frametitle{RUN}
     \terminal
     \begin{columns}
@@ -264,20 +273,37 @@
 \begin{minted}{bash}
 > docker build -t example:single -f Dockerfile.single .
 > docker build -t example:multi -f Dockerfile.multi .
-# Entstandene Images anschauen
-> docker images
+# Vergleicht die Build-time
+
+# Vergleicht die Größe - Wie?
+> docker images # Entstandene Images anschauen
+
 \end{minted}
-    \pause\medskip
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{RUN}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.single}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.multi}
+        \end{column}
+    \end{columns}
+    \medskip
     \begin{itemize}
-        \item pro \code{RUN} baut Docker einen Layer
-        \item Layer werden gecached und nach Möglichkeit wiederverwendet
-        \item verbinden von \code{RUN} instructions verbessert built time und Image Größe
+        \item<1-> pro \code{RUN} baut Docker einen Layer
+        \item<2-> mehr Layer vergrößern das Image
+        \item<2-> Layer werden gecached und nach Möglichkeit wiederverwendet
+        \item<3-> verbinden von \code{RUN} instructions verbessert built time und Image Größe
     \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile, t]
     \frametitle{CMD vs. ENTRYPOINT}
     %% TODO: pre build images
+    %% Comment: Experementiert das gerne etwas mit rum, zwei Entry Points, CMD und Entrypoint gemischt
     \terminal
     \begin{columns}[t]
         \begin{column}{0.5\textwidth}
@@ -288,18 +314,30 @@
         \end{column}
     \end{columns}
     \medskip
-\begin{minted}[fontsize=\scriptsize]{bash}
+\begin{minted}{bash}
 > docker build -t example:cmd -f Dockerfile.cmd .
 > docker build -t example:entry -f Dockerfile.entry .
 \end{minted} 
-\pause
+\pause\medskip
 %% demo docker run example:cmd hello
 \begin{minted}{bash}
 > docker run example:cmd
 > docker run example:cmd echo hello
 > docker run example:entry hello        
 \end{minted}
-    \pause \medskip
+\end{frame}
+
+\begin{frame}[fragile, t]
+    \frametitle{CMD vs. ENTRYPOINT}
+    \begin{columns}[t]
+        \begin{column}{0.5\textwidth}
+            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.cmd}
+        \end{column}
+        \begin{column}{0.5\textwidth} 
+            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.entry}
+        \end{column}
+    \end{columns}
+    \medskip
     \begin{itemize}
         \item beide definieren den, was nach Container start ausgeführt wird
         \item \code{CMD} kann überschrieben werden
@@ -307,13 +345,10 @@
     \end{itemize}
 \end{frame}
 
-
-%% vllt Docker mit ubuntu for exec, it, start, stop, name
-
 \subsection{Einfache Container}
 \begin{frame}[c]
     \frametitle{Zusammenhang der Docker Komponenten}
-    %% TODO: Zusammenhang Image haben wir jetzt, wie wird aus dem Image ein Conatiner
+    %% TODO: Gimp Zusammenhang Image haben wir jetzt, wie wird aus dem Image ein Conatiner
     \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf_dark.png}
 \end{frame}
 
@@ -331,22 +366,26 @@
         \item[\desclabel{--mount mount}] Attach a filesystem mount to the container
         \item[\desclabel{-p [host]:[port]}] Publish a container's port(s) to the host
         \item[\desclabel{-P}] Publish all exposed ports
-        \item[\desclabel{--rm}] Automatically remove the container when it exits
+        \item[\desclabel{--rm}] Auto remove the container when it exits
         \item[\desclabel{-v, --volume list}] Bind mount a volume
         \item[\desclabel{-w}] Provides an execution directory inside the container
+        \item[...] 
     \end{description}
+    \code{IMAGE} Referenz zum Image (Tag oder Id/Hash)
+\end{frame}
+
+\begin{frame}[c]
+    \frametitle{Python / FastAPI}
+    \includegraphics[width=1.3\textwidth]{Bilder/Fastapi.png}
 \end{frame}
 
 \subsection{Python (FastAPI)}
 \begin{frame}[fragile]
-    \codeTerminal
+    \codeTour
     \frametitle{Python FastAPI im Conatiner}
-    %% TODO: CodeTour zum Dockerfile
+    %% TODO: CodeTour zum Dockerfile oder Kommentare
     %% Mention Copy statments
     \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/FastAPI/Dockerfile}
-    
-    %% run mit volume und port
-    %% start, stop, rm
 \end{frame}
 
 \begin{frame}[fragile]
@@ -354,51 +393,92 @@
     \terminal
 \begin{minted}{bash}
 > cd examples/FastAPI
-> docker build -t fastapiapp .
-> docker run -d --name backend -p 8080:80 fastapiapp
+> docker build -t fastapiapp:v1 .
+> docker run -d --name backend -p 8000:80 fastapiapp:v1
+# Open http://localhost:8000/docs
 > docker exec -it backend bash
+# 'exit' um den Container zu verlassen
 > docker stop backend
 > docker start backend
-> docker rm backend ??
+> docker rm backend
+> docker run -it --name backend \
+    -p 8000:80 fastapiapp:v1 bash
 \end{minted}
     %% stoppen
     %% Überleitung: beim zweiten start Songs hinzugügen, 
     %% nach dem remove neuen Container, der hat die Songs nicht
+    %% vllt Docker mit ubuntu for exec, it, start, stop, name
 \end{frame}
 
-\begin{frame}[t]
-    \frametitle{title}
+\begin{frame}
+    \frametitle{docker exec command}
+    \code{docker exec [OPTIONS] CONTAINER COMMAND [ARG...]}
+
+    \-  \ Command in einem laufenden Container ausführen
+
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
+        \item[\desclabel{-d}] im Hintergund ausführen
+        \item[\desclabel{-e}] env Variablen setzen
+        \item[\desclabel{-it}] Interaktives Terminal öffnen
+        \item[\desclabel{-w, --workdir string}] Aktuelles Verzeichnis im Container ändern
+        \item[...] 
+    \end{description}
+    %% commit
+\end{frame}
+
+\begin{frame}
+    \frametitle{docker start \& stop command}
+        %% run mit volume und port
+    %% start, stop, rm
+    \code{docker build [OPTIONS] PATH | URL | -}
+
+    \-  \ DESC
+
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
+        \item[\desclabel{-bla}] BLA
+    \end{description}
+\end{frame}
+
+\begin{frame}[fragile, t]
+    \frametitle{Wo ist mein Song?}
+    Problem reproduzieren:
+\begin{minted}[fontsize=\footnotesize]{bash}
+> cd examples/FastAPI
+> docker build -t fastapiapp:v1 .
+> docker run -d --name backend -p 8000:80 --rm fastapiapp:v1
+# Öffne http://localhost:8000/docs + add_song() ausführen
+> docker stop backend # Container automatisch gelöscht
+> docker run -d --name backend -p 8000:80 --rm fastapiapp:v1
+# get_songs() ausführen -> Song fehlt :/
+\end{minted}
+\pause\medskip
     \begin{itemize}
-        \item Problem ohne Volume
+        \item der Song ist im Container gespeichert, nicht im Image
+        \item \code{--rm} löscht den Container nach Beendigung
     \end{itemize}
+    Wie bekomme ich den Song permantent gespeichert?
 \end{frame}
 
 \begin{frame}[fragile]
     \frametitle{Python FastAPI im Conatiner}
-    \terminal
+    \only<2->{\terminal}
     \begin{itemize}
-        \item Option 1: json anpassen, Image neu erstellen
-    \end{itemize}
-
-\end{frame}
-
-\begin{frame}[fragile]
-    \frametitle{Python FastAPI im Conatiner}
-    \terminal
-    \begin{itemize}
-        \item Option 1: json anpassen, Image neu erstellen
-        \item Option 2: changes commiten
-    \end{itemize}
-
+        \item<1-> Option 1: json anpassen, Image neu erstellen
+        \item<2-> Option 2: Änderungen commiten
+        \item<3-> Option 3: Volumes und Mounts verwenden
+    \end{itemize}\pause
+    \medskip
 \begin{minted}{bash}
-> docker commit mycontainer fastapiapp:v2
+> docker commit backend fastapiapp:v2
 > docker run -d --name backend2 --rm \
-    -p 8000:80 fastapiapp:v2
-# open localhost:8000/docs -> get_songs() hat neue Songs
+    -p 8080:80 fastapiapp:v2
+# Öffne localhost:8080/docs -> get_songs() hat neue Songs
 
 > docker run -d --name backend --rm \
-    -p 8080:80 fastapiapp
-# open localhost:8080/docs -> get_songs() hat keine
+    -p 8000:80 fastapiapp:v1
+# Öffne localhost:8000/docs -> get_songs() hat keine
 \end{minted}
 \end{frame}
 
@@ -437,7 +517,7 @@
 # Quiz: why is this not working
 > docker run -d --rm --name backend \
     -v ${PWD}/app/songs.json:/app/songs.json \
-    -p 8000:80 fastapiapp
+    -p 8000:80 fastapiapp:v1
 \end{minted}
     \pause
 \begin{minted}{bash}
@@ -445,19 +525,19 @@
 # in this case code 'WORKDIR /code'
 > docker run -d --rm --name backend \
     -v ${PWD}/app/songs.json:/code/app/songs.json \
-    -p 8000:80 fastapiapp    
+    -p 8000:80 fastapiapp:v1 
 \end{minted}
             
 \end{frame}
 
 \subsection{React}
 %% Überletung jetzt wollen wir natürlich auch noch eine Oberfläche
-\begin{frame}[t]
+\begin{frame}[c]
     \frametitle{React}
-    %% TODO: Bild von Webseite
-    \includegraphics{Bilder/1200px-Docker-compose-logo.jpg}
-
+    \includegraphics[width=1\textwidth]{Bilder/Webseite.png}
 \end{frame}
+
+
 
 \begin{frame}[fragile]
     \frametitle{React - Dockerfile}
@@ -466,19 +546,22 @@
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitle{React - Dockerfile}
+    \frametitle{React im Container}
     \terminal
     %% TODO: Code Tour zu dem File
+    %% TODO: prebuild image
 \begin{minted}{bash}
 > cd examples/React
-> docker build -t reactapp:dev
+> docker build -t reactapp:dev .
 > docker run -it --rm --name frontenddev \
     -v ${PWD}:/app -v /app/node_modules \
     -e CHOKIDAR_USEPOLLING=true \
     -p 3000:3000  reactapp:dev
-# open localhost:3000
-# Note: backend Container sollte laufen
+# Öffne localhost:3000
+
 \end{minted}
+%% TODO: was macht nochmal Chokidar use polling
+\footnotesize (Der Container \code{backend} sollte laufen, damit die Webseite richtig funktioniert)
 \end{frame}
 
 \subsection{Multistage Builds}
@@ -506,19 +589,21 @@
     \frametitle{React - Multistage}
     \terminal
 \begin{minted}{bash}
-> docker build -f Dockerfile.prod -t frontend:prod .
-> docker run -it --rm --name frontend -p 1337:80 frontend:prod
+> docker build -f Dockerfile.prod -t reactapp:prod .
+> docker run -it --rm --name frontend \
+    -p 1337:80 reactapp:prod
 \end{minted}
 
-%% TODO: 
-Size comparison
-frontenddev:
-frontend:
+Vergleiche die Größe der Images:\pause
+
+frontenddev: 832 MB
+
+frontend: 50.9 MB
 
 \end{frame}
 
 \begin{frame}[t]
-    \frametitle{Dockerfile Best practices}
+    \frametitle{Dockerfile Best Practices}
     \begin{itemize}
         \item \code{RUN} instructions mit \&\& zusammenfassen
         \item \code{COPY} sinnvoll platzieren, damit Cache best möglich genutzt werden kann
@@ -528,54 +613,118 @@ frontend:
     \end{itemize} 
 \end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{title}
+    \begin{minted}{bash}
+
+> docker push
+> docker pull
+> docker create
+> docker ps
+..
+%% TODO:
+        
+    \end{minted}
+\end{frame}
 %% Pause alle Container stoppen, ggf kurz Docker Desktop zeigen
+
+\begin{frame}[c]
+    \includegraphics[width=1.2\textwidth]{Bilder/1200px-Docker-compose-logo.jpg}
+\end{frame}
 
 \begin{frame}[t]
     \frametitle{Docker Compose}
+    \begin{block}{Was?}
+        ?
+        
+    \end{block}
+    \begin{block}{Warum?}
+        \begin{itemize}
+            \item 
+        \end{itemize}
+    \end{block}
     %% TODO: 
     \begin{itemize}
         \item Vorteile
         \item UseCases
     \end{itemize} 
+    Anmerkung: Python in \code{examples/FastAPI}, React in \code{examples/React} und Full App in \code{examples} ausführen
 \end{frame}
 
 \begin{frame}[fragile]
+    \terminal
     \frametitle{Docker Compose zu Python}
     \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/FastAPI/docker-compose.yml}
-    \medskip
-    %% TODO: einheitliche port
+    \verb|docker compose up|
+    \medskip\pause
     \begin{minted}{bash}
+> docker build -t fastapiapp:v1 .
 > docker run -d --rm --name backend \
     -v ${PWD}/app/songs.json:/code/app/songs.json \
-    -p 8000:80 fastapiapp 
-        
+    -p 8000:80 fastapiapp:v1
     \end{minted}
+    \begin{textblock*}{1.3cm}(11cm,6.8cm) % {block width}(xcoord, ycoord)
+        \huge \textcolor{red}{vs.}
+    \end{textblock*}
 \end{frame}
 
 \begin{frame}[fragile]
     \frametitle{Docker Compose Webapp}
     \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/React/docker-compose.prod.yml}
 \begin{minted}{bash}
-> docker run -it --rm --name frontend -p 1337:80 frontend:prod
-> docker-compose -f docker-compose.prod.yml up -d --build
-    
+> docker-compose -d -f docker-compose.prod.yml \
+    up
 \end{minted}
+\medskip
+
+\begin{minted}{bash}
+> docker run -it --rm -d --name frontend \
+    -p 1337:80 frontend:prod
+\end{minted}
+
+\begin{textblock*}{1.3cm}(11cm,7cm) % {block width}(xcoord, ycoord)
+    \huge \textcolor{red}{vs.}
+\end{textblock*}
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitle{Docker Compose}
+    \frametitle{Docker Compose Full App}
     %% TODO: ZEile mit image statt build
     \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/docker-compose.yml}
 \begin{minted}{bash}
-> docker-compose up
-    
+> docker-compose up 
 \end{minted}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{docker compose command}
+    \code{docker build [OPTIONS] PATH | URL | -}
+
+    \-  \ DESC
+
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
+        \item[\desclabel{-bla}] BLA
+    \end{description}
 \end{frame}
 
 %% TODO: weitere commands
 %
 \begin{frame}[t]
-    \frametitle{Andere UseCases}
+    \frametitle{Andere UseCases - Docker}
+    \begin{itemize}
+        \item OpenDrone Map
+        \item Nathalies Kubernetes Arbeit
+        \item Felix Hiwi arbeit
+        \item deply your app on a cloud hosted frame work
+    \end{itemize}
+\end{frame}
+
+%% TODO: weitere commands
+%
+\begin{frame}[t]
+    \frametitle{Andere UseCases - Docker Compose}
     \begin{itemize}
         \item OpenDrone Map
         \item Nathalies Kubernetes Arbeit
@@ -587,6 +736,8 @@ frontend:
 %% Cheatsheet für alle genanten commands, build, run, commit, ps, rm, exec, start, stop
 \begin{frame}[t]
     \frametitle{Cheatsheet}
+    %% remove dangling images
+    %% TODO: für alle commands die hier genannt werden eine kureze erklärung
     \begin{itemize}
         \item docker run
         \item docker build
