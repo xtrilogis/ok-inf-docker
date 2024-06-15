@@ -1,0 +1,47 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "React-Dockerfile",
+  "steps": [
+    {
+      "file": "examples/React/Dockerfile.prod",
+      "description": "Stage 1: React App erstellen",
+      "line": 1
+    },
+    {
+      "file": "examples/React/Dockerfile.prod",
+      "description": "Node Image mit Nodeversion 18.16 als Base Image\r\n\r\n`as build`: Name der 'Stage' zum späteren referenzieren",
+      "line": 2
+    },
+    {
+      "file": "examples/React/Dockerfile.prod",
+      "description": "Requirements kopieren und installieren",
+      "line": 8
+    },
+    {
+      "file": "examples/React/Dockerfile.prod",
+      "description": "App Code kopieren und anschließend mit `npm run build` kompelieren",
+      "line": 10
+    },
+    {
+      "file": "examples/React/Dockerfile.prod",
+      "description": "Stage 2: App laufen lassen",
+      "line": 12
+    },
+    {
+      "file": "examples/React/Dockerfile.prod",
+      "description": "nginx server als Grundlage",
+      "line": 13
+    },
+    {
+      "file": "examples/React/Dockerfile.prod",
+      "description": "kopiert die fertig gebaute App von Stage 1",
+      "line": 14
+    },
+    {
+      "file": "examples/React/Dockerfile.prod",
+      "description": "Startet den nginx Webserver mit der App",
+      "line": 16
+    }
+  ],
+  "ref": "master"
+}

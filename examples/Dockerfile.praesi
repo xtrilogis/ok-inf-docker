@@ -17,10 +17,10 @@ USER UID:GID
 WORKDIR directory
 
 # Add files
-COPY [--chown=user] source destination
+COPY [--chown=user] source destination/
 
 # additionally add remote url (e.g. git repos) or compressed soures
-ADD [--chown=...] source destination
+ADD [--chown=...] source destination/
 
 # Execute commands during build time
 RUN command \

@@ -6,6 +6,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage{minted}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shadows}
 \usepackage[absolute,overlay]{textpos}
 \usepackage{comment}
 \usepackage{color}
@@ -75,7 +77,7 @@
         \begin{figure}
             \includegraphics[width=1.5cm]{Bilder/terminal2.png}
             \captionsetup{justification=centering}
-            \caption*{commands im Terminal ausführen\\ Ordner \code{examples}, wenn nichts da steht}
+            \caption*{Befehle im Terminal ausführen\\ Ordner \code{examples}, wenn nichts da steht}
         \end{figure}
 
     \end{textblock*}
@@ -112,6 +114,13 @@
     \begin{center}
         "faster onboarding and testing while also simplifying the deployment of services"
     \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Wiso, Weshalb, Warum?}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{Bilder/Meme.png}
+    \end{center}\pause
 \end{frame}
 
 \begin{frame}[t]
@@ -221,7 +230,6 @@
     Weitere Informationen und Instruction
     \href{https://docs.docker.com/reference/dockerfile/#overview}{https://docs.docker.com/reference/dockerfile/}
 
-
 \end{frame}
 
 
@@ -233,20 +241,21 @@
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitle{docker build command}
+    \frametitle{docker build Befehl}
     \code{docker build [OPTIONS] PATH | URL | -} 
     
-    \-  \ Build an image from a Dockerfile
+    \-  \ Erstelle ein Image aus einem Dockerfile
 
     \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-f, --file string}, leftmargin=!]
-        \item[\desclabel{-t, --tag stringArray}] Name and optionally a tag (format: "name:tag")
-        \item[\desclabel{-f, --file string}] Name of the Dockerfile (default: "PATH/Dockerfile")
+        \item[\desclabel{-t, --tag stringArray}] Name und optionaler Tag für das Image (format: "name:tag")
+        \item[\desclabel{-f, --file string}] Name des Dockerfile
         \item[...] 
     \end{description}
     
     \code{PATH} Pfad zum Build Kontext (Ordner), meistens \code{.}
 
+    Beispiele
     \begin{minted}[fontsize=\small]{bash}
     docker build . # 'Dockerfile' im aktuellen Ordner
     docker build -t myimage:v1 . 
@@ -341,7 +350,7 @@
     \begin{itemize}
         \item beide definieren den, was nach Container start ausgeführt wird
         \item \code{CMD} kann überschrieben werden
-        \item \code{ENTRYPOINT} bestimmt den command, neue Parameter werden angehangen
+        \item \code{ENTRYPOINT} bestimmt den Befehl, neue Parameter werden angehangen
     \end{itemize}
 \end{frame}
 
@@ -353,31 +362,34 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{docker run command}
+    \frametitle{docker run Befehl}
     \code{docker run [OPTIONS] IMAGE [COMMAND] [ARG...]}
 
-    \-  \ Create and run a new container from image
+    \-  \ Erstelle und starte einen Container von einem Image
 
     \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{--mount mountm}, leftmargin=!]
-        \item[\desclabel{-d}] Detach from terminal | run in background
-        \item[\desclabel{-e}] Set environment variables
-        \item[\desclabel{-it}] Interactive terminal, enter container terminal
-        \item[\desclabel{--mount mount}] Attach a filesystem mount to the container
-        \item[\desclabel{-p [host]:[port]}] Publish a container's port(s) to the host
-        \item[\desclabel{-P}] Publish all exposed ports
-        \item[\desclabel{--rm}] Auto remove the container when it exits
-        \item[\desclabel{-v, --volume list}] Bind mount a volume
+        \item[\desclabel{-d}] Container vom Terminal lösen (im Hintergrund laufen lassen)
+        \item[\desclabel{-it}] Interaktives Terminal im Container öffnen
+        \item[\desclabel{-e}] Umgebungsvariablen setzen
         \item[\desclabel{-w}] Provides an execution directory inside the container
+        \item[\desclabel{-p [host]:[port]}] Port(s) veröffentlichen
+        \item[\desclabel{-P}] Alle Ports veröffentlichen
+        \item[\desclabel{--rm}] Container automatisch nach Beenden entfernen
+        \item[] \item[\desclabel{--mount mount}] Dateisystem and den Container mounten
+        \item[\desclabel{-v, --volume list}] Bind mount ein Volume
         \item[...] 
     \end{description}
     \code{IMAGE} Referenz zum Image (Tag oder Id/Hash)
 \end{frame}
 
-\begin{frame}[c]
+\begin{frame}[plain]
     \frametitle{Python / FastAPI}
-    \includegraphics[width=1.3\textwidth]{Bilder/Fastapi.png}
+    \begin{textblock*}{\paperwidth}(0cm,1.5cm) % {block width}(xcoord, ycoord)
+        \includegraphics[width=\paperwidth]{Bilder/Fastapi.png}
+        \end{textblock*}
 \end{frame}
+
 
 \subsection{Python (FastAPI)}
 \begin{frame}[fragile]
@@ -410,11 +422,11 @@
     %% vllt Docker mit ubuntu for exec, it, start, stop, name
 \end{frame}
 
-\begin{frame}
-    \frametitle{docker exec command}
+\begin{frame}[fragile]
+    \frametitle{docker exec Befehl}
     \code{docker exec [OPTIONS] CONTAINER COMMAND [ARG...]}
 
-    \-  \ Command in einem laufenden Container ausführen
+    \-  \ Befehl in einem laufenden Container ausführen
 
     \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
@@ -424,20 +436,56 @@
         \item[\desclabel{-w, --workdir string}] Aktuelles Verzeichnis im Container ändern
         \item[...] 
     \end{description}
-    %% commit
+
+    Beispiele:
+\begin{minted}[fontsize=\small]{bash}
+docker exec -it backend bash # Interaktives Terminal öffnen
+docker exec -d backend touch /code/README.md
+docker exec -e VAR_A=1 -e VAR_B=2 backend env
+\end{minted}
+    
+\end{frame}
+
+%% commit
+\begin{frame}
+    \frametitle{docker container control Befehl}
+
+    \code{docker create [OPTIONS] IMAGE [COMMAND] [ARG...]}\\
+    \-  \ Erstelle einen Container ohne ihn zustarten \medskip
+
+    \code{docker start [OPTIONS] CONTAINER [CONTAINER...]}\\
+    \-  \ Starte einen oder mehrere exitierende Container \medskip
+
+    \code{docker stop [OPTIONS] CONTAINER [CONTAINER...]}\\
+    \-  \ Stoppe einen oder mehrere laufende Container (SIGTERM) \medskip
+
+    \code{docker pause CONTAINER [CONTAINER...]}\\
+    \-  \ Stoppe alle Prozesse innerhalb eines oder mehrerer Conatiner \medskip
+
+    \code{docker kill [OPTIONS] CONTAINER [CONTAINER...]}\\
+    \-  \ Stoppe einen oder mehrere laufende Container (SIGKILL) \medskip
+    
 \end{frame}
 
 \begin{frame}
-    \frametitle{docker start \& stop command}
-        %% run mit volume und port
-    %% start, stop, rm
-    \code{docker build [OPTIONS] PATH | URL | -}
+    \frametitle{docker remove Befehle}
+    \code{docker rm [OPTIONS] CONTAINER [CONTAINER...]}
 
-    \-  \ DESC
+    \- \ Entferne einen oder mehrere Container
 
     \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
-        \item[\desclabel{-bla}] BLA
+        \item[\desclabel{-f, --force}] Erzwinge das Entfernen
+        \item[\desclabel{-v, --volumes}] Verbundene anonyme Mounts auch entfernen
+    \end{description}\medskip\medskip
+    \code{docker rmi [OPTIONS] IMAGE [IMAGE...]}
+
+    \- \ Entferne ein oder mehrere Images
+
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
+        \item[\desclabel{-f, --force}] Erzwinge das Entfernen
+        \item[\desclabel{--no-prune}] Do not delete untagged parents
     \end{description}
 \end{frame}
 
@@ -532,10 +580,16 @@
 
 \subsection{React}
 %% Überletung jetzt wollen wir natürlich auch noch eine Oberfläche
-\begin{frame}[c]
+
+    
+\begin{frame}[plain]
     \frametitle{React}
-    \includegraphics[width=1\textwidth]{Bilder/Webseite.png}
+    \begin{textblock*}{\paperwidth}(0cm,1.5cm) % {block width}(xcoord, ycoord)
+        %% TODO: with new Songs
+        \includegraphics[width=\paperwidth]{Bilder/Webseite.png}
+    \end{textblock*}
 \end{frame}
+
 
 
 
@@ -555,7 +609,7 @@
 > docker build -t reactapp:dev .
 > docker run -it --rm --name frontenddev \
     -v ${PWD}:/app -v /app/node_modules \
-    -e CHOKIDAR_USEPOLLING=true \
+    -e CHOKIDAR_USEPOLLING=true \ # enable hot-reloading
     -p 3000:3000  reactapp:dev
 # Öffne localhost:3000
 
@@ -614,41 +668,55 @@ frontend: 50.9 MB
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitle{title}
+    \frametitle{Weiteres zu docker}
+    \code{.dockerignore}
+    \begin{itemize}
+        \item vgl. .gitignore für Docker
+        \item bestimmte Datein/Ordern ausschließen
+        \item geringere Image Größe
+        \item kein Cache invalidation
+    \end{itemize}
+    \medskip
     \begin{minted}{bash}
-
+# interaktion mit Registries
 > docker push
-> docker pull
-> docker create
-> docker ps
-..
-%% TODO:
-        
-    \end{minted}
+> docker pull 
+# Scan auf Sicherheitslücken
+> docker scout   
+\end{minted}
+Docker Desktop bietet eine Benutzeroberfläche für die meinsten Befehle\\
+Weitere Befehle am Ende
 \end{frame}
 %% Pause alle Container stoppen, ggf kurz Docker Desktop zeigen
 
-\begin{frame}[c]
-    \includegraphics[width=1.2\textwidth]{Bilder/1200px-Docker-compose-logo.jpg}
+\begin{frame}[plain]
+    \begin{textblock*}{\paperwidth}(0cm,1.5cm) % {block width}(xcoord, ycoord)
+        \includegraphics[width=\paperwidth]{Bilder/1200px-Docker-compose-logo.jpg}
+    \end{textblock*}
 \end{frame}
 
 \begin{frame}[t]
     \frametitle{Docker Compose}
     \begin{block}{Was?}
-        ?
+        Tool um Multi-Container Anwendungen einfach auszuführen\\
+        eine Konfiguration, statt in meheren Terminals alle verschiedene Container laufen zu lassen
         
     \end{block}
     \begin{block}{Warum?}
         \begin{itemize}
-            \item 
+            \item leichter mit mehreren Container zuarbeiten
+            \item gute Portabilität
+            \item schnelle Anwendungsentwicklung
         \end{itemize}
     \end{block}
-    %% TODO: 
-    \begin{itemize}
-        \item Vorteile
-        \item UseCases
-    \end{itemize} 
-    Anmerkung: Python in \code{examples/FastAPI}, React in \code{examples/React} und Full App in \code{examples} ausführen
+    \begin{block}{Wie?}
+        \begin{itemize}
+            \item Definition von Services in \code{docker-compose.yml}
+            \item ein Service entspricht einem Container
+        \end{itemize}
+    \end{block}
+    \medskip
+    \footnotesize Anmerkung: Python in \code{examples/FastAPI}, React in \code{examples/React} und Full App in \code{examples} ausführen
 \end{frame}
 
 \begin{frame}[fragile]
@@ -698,31 +766,78 @@ frontend: 50.9 MB
 \end{frame}
 
 \begin{frame}
-    \frametitle{docker compose command}
-    \code{docker build [OPTIONS] PATH | URL | -}
+    \frametitle{docker-compose up Befehl}
+    \code{docker-compose up [OPTIONS] [SERVICE...]}
 
-    \-  \ DESC
+    \- \ Erstellen, (neu)erstellen, starten und an Container eines Dienstes anhängen
 
     \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
-        \item[\desclabel{-bla}] BLA
+        \item[\desclabel{-d, --detach}] Führe die Container im Hintergrund aus
+        \item[\desclabel{--build}] Baue die Images, bevor die Container gestartet werden
+        \item[\desclabel{--no-build}] Baue kein Image, selbst wenn es fehlt
+        \item[\desclabel{--force-recreate}] Erstelle Container neu, auch wenn deren Konfiguration und Image sich nicht geändert haben
+        \item[\desclabel{--no-recreate}] Erstelle Container nicht neu, wenn sie bereits existieren
+        \item[\desclabel{--remove-orphans}] Entferne Container von Diensten, die nicht in der Compose-Datei definiert sind
+        \item[\desclabel{-V, --renew-anon-volumes}] Erstelle anonyme Volumes neu, anstatt Daten von vorherigen Containern zu übernehmen
     \end{description}
 \end{frame}
 
-%% TODO: weitere commands
-%
+\begin{frame}
+    \frametitle{docker-compose down Befehl}
+    \code{docker-compose down [OPTIONS]}
+
+    \- \ Stoppt und entfernt Container, Netzwerke, Images und Volumes
+
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
+        \item[\desclabel{--rmi type}] Entfernt Images. Der Typ muss einer der folgenden sein:
+        \begin{description}
+            \item[\desclabel{all}] Entfernt alle Images, die von einem Dienst verwendet werden
+            \item[\desclabel{local}] Entfernt nur Images, die kein benutzerdefiniertes Tag haben
+        \end{description}
+        \item[\desclabel{-v, --volumes}] Entfernt benannte Volumes, die im `volumes` Abschnitt der Compose-Datei deklariert sind
+        \item[\desclabel{--remove-orphans}] Entfernt Container für Dienste, die nicht in der Compose-Datei definiert sind
+    \end{description}
+\end{frame}
+
+%% erkläre services
+\begin{frame}[fragile]
+    \frametitle{Weiter Docker Compose Befehle}
+    \code{docker-compose build [OPTIONS] [SERVICE...]}\\
+    \-  \ Build oder rebuild Services \\
+    \code{docker-compose start [SERVICE...]}\\
+    \-  \ Starte existierende Containers \\
+
+    \code{docker-compose stop [OPTIONS] [SERVICE...]}\\
+    \-  \ Stoppe laufende Containers ohne sie zu entfernen \\
+
+    \code{docker-compose rm [OPTIONS] [SERVICE...]}\\
+    \-  \ Entferne gestoppte Container \\
+
+    \code{docker-compose exec [OPTIONS] SERVICE COMMAND [ARGS...]}\\
+    \-  \ Führe einen Befehl in einem Container aus \\
+
+    ...
+\end{frame}
+
+\begin{frame}[t]
+    \begin{textblock*}{\paperwidth}(0cm,1.5cm) % {block width}(xcoord, ycoord)
+        \includegraphics[width=\paperwidth]{Bilder/Docker-Ablauf.png}
+    \end{textblock*}
+\end{frame}
+
 \begin{frame}[t]
     \frametitle{Andere UseCases - Docker}
     \begin{itemize}
         \item OpenDrone Map
-        \item Nathalies Kubernetes Arbeit
-        \item Felix Hiwi arbeit
+        \item Datenbanken in Containern
+        \item Kubernetes Cluster
+        \item Unternehmen, die wohl Docker nutzen: Airbnb, Spotify, PayPal, Uber, Netflix
+        \item \href{https://www.simplilearn.com/docker-use-cases-article}{UseCasees}
         \item deply your app on a cloud hosted frame work
     \end{itemize}
 \end{frame}
-
-%% TODO: weitere commands
-%
 \begin{frame}[t]
     \frametitle{Andere UseCases - Docker Compose}
     \begin{itemize}
@@ -733,28 +848,92 @@ frontend: 50.9 MB
     \end{itemize}
 \end{frame}
 
-%% Cheatsheet für alle genanten commands, build, run, commit, ps, rm, exec, start, stop
+\subsection{Weitere Befehle}
 \begin{frame}[t]
-    \frametitle{Cheatsheet}
-    %% remove dangling images
-    %% TODO: für alle commands die hier genannt werden eine kureze erklärung
-    \begin{itemize}
-        \item docker run
-        \item docker build
-        \item docker push, pull
-        \item docker ps -a
-        \item docker rm / rmi
-        \item ...
-    \end{itemize} 
+    \begin{textblock*}{\paperwidth}(0cm,1.5cm) % {block width}(xcoord, ycoord)
+        \includegraphics[width=\paperwidth]{Bilder/dockercommand.png}
+    \end{textblock*}
+\end{frame} 
+
+\begin{frame}[fragile]
+    \frametitle{docker commit Befehl}
+    \code{docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]}
+
+    \- \ Erstelle ein neues Image aus dem aktuellen Containerzustand
+
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
+        \item[\desclabel{-c, --change list}] Verwende Dockerfile instruction zum erstellen
+        \item[\desclabel{-m, --message string}] Commit Nachricht
+        \item[\desclabel{-p, --pause}] Pausere den Container während des commits (default true)
+    \end{description}
+    \medskip
+    \code{docker tag SOURCE\_IMAGE[:TAG] TARGET\_IMAGE[:TAG]}\\
+    \-  \ Erstelle einen neuen Tag für ein Image \\
+    \-  \ \verb|docker image tag 9c62f3337754 ubuntu:v3|\medskip
 \end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{docker cp Befehl und mehr }
+    \code{docker cp [OPTIONS] CONTAINER:SRC\_PATH DEST\_PATH|-}
+
+    \- \ Kopiere Datein zwichen Container und lokalem Speicher
+
+    \code{[OPTIONS]}\\
+    \code{CONTAINER:SRC\_PATH DEST\_PATH|-} Kopiere von Conatiner zu lokal\\
+    \code{SRC\_PATH|- CONTAINER:DEST\_PATH} Kopiere von lokal zu Container\\
+    \code{-} Nutze tar archive
+    \medskip
+    
+    \code{docker import [OPTIONS] file | URL | - [REPOSITORY[:TAG]]}\\
+    \-  \ Erstelle ein Image aus einer tar-Datei  \medskip
+
+    \code{docker export [OPTIONS] CONTAINER}\\
+    \-  \ Dateisystem eines Containers als tar speichern \medskip
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{docker images Befehl}
+    \code{docker images [OPTIONS] [REPOSITORY[:TAG]]}
+
+    \- \ Auflistung von Images
+
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
+        \item[\desclabel{-a, --all}] Zeige alle Images (default: intermediate Images versteckt)
+        \item[\desclabel{-f, --filter filter}] Filter das Ergebnis
+        \item[\desclabel{--format string}] Ausgabe formatieren
+    \end{description}\medskip
+    \code{docker ps [OPTIONS]}
+
+    \- \ Auflistung von laufenden Containern
+
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
+        \item[\desclabel{-a, --all}] Zeige alle Container (auch gestoppte)
+        \item[\desclabel{-f, --filter filter}] Filter das Ergebnis
+        \item[\desclabel{--format string}] Ausgabe formatieren
+        \item[\desclabel{-n, --last int}] Zeige nur die letzten n Container
+        \item[\desclabel{-s, --size}] Zeige die Größe an
+    \end{description}
+\end{frame} 
 
 \begin{frame}[t]
     \frametitle{Coole Quellen und so weiter}
     \begin{itemize}
         \item \href{https://www.docker.com/}{https://www.docker.com/}
         \item Offizielle Dokumentation: \href{https://docs.docker.com/get-started/}{https://docs.docker.com/get-started/}
-        \item 
+        \item \href{https://www.heise.de/news/Wie-man-Docker-auf-dem-Raspberry-Pi-in-15-Minuten-einrichtet-7524692.html}{Wie man Docker auf Rasberry Pi einrichtet}
     \end{itemize} 
+    \begin{block}{Weitere Themen für Lightning Talks und Full Talks}
+        \begin{itemize}
+            \item Docker Networks
+            \item Docker Compose (ausführlicher)
+            \item Kubernetes
+        \end{itemize}
+        
+    \end{block}
 \end{frame}
 
 \end{document}

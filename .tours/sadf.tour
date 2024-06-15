@@ -1,0 +1,32 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Python-Dockerfile",
+  "steps": [
+    {
+      "file": "examples/FastAPI/Dockerfile",
+      "description": "Base Image\r\n\r\nPython Image mit Python version 3.10.11",
+      "line": 1
+    },
+    {
+      "file": "examples/FastAPI/Dockerfile",
+      "description": "setze das Arbeitsverzeichnis auf /code",
+      "line": 3
+    },
+    {
+      "file": "examples/FastAPI/Dockerfile",
+      "description": "kopiere de Requirements und installiere sie",
+      "line": 7
+    },
+    {
+      "file": "examples/FastAPI/Dockerfile",
+      "description": "App Code erst hier importieren\r\n- Source code ändert sich öffter als die requirements\r\n- Zeile 5 und 7 müssten sonst jedes Mal neu augeführt werden\r\n- So werden sie nur erneut ausgeführt, wenn sich requirements ändern",
+      "line": 9
+    },
+    {
+      "file": "examples/FastAPI/Dockerfile",
+      "description": "Fast API starten",
+      "line": 11
+    }
+  ],
+  "ref": "master"
+}
