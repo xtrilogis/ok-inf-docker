@@ -17,7 +17,21 @@
 \usepackage{caption}
 \setlist[itemize]{label=\textbullet, labelsep=1em, leftmargin=2em}
 \usepackage{caption}
+\usepackage[normalem]{ulem}
+\usepackage{tcolorbox}  % For creating colored boxes
+\usepackage[absolute,overlay]{textpos}
 
+% Configure the hyperref package
+\hypersetup{
+    colorlinks=true,         % Color the link text
+    linkcolor=blue,          % Color for internal links (e.g., \ref, \pageref)
+    filecolor=blue,          % Color for file links
+    citecolor=blue,          % Color for citation links
+    urlcolor=blue            % Color for URLs (e.g., \href, \url)
+}
+
+% Redefine \href to include underlining
+\renewcommand{\href}[2]{\textcolor{blue}{\uline{#2}}}
 
 \newcommand{\code}[1]{\colorbox{gray!10}{\texttt{#1}}}
 \newcommand{\desclabel}[1]{\textcolor{cyan}{#1}}
@@ -63,9 +77,6 @@
     \vfill
 \end{frame}
 
-\maketitle
-
-
 \begin{frame}[t]
     \frametitle{Disclaimer}
     \begin{itemize}
@@ -89,7 +100,6 @@
             \captionsetup{justification=centering}
             \caption*{CodeTour (VSCode Plugin)\\Code im Repo}
         \end{figure}
-    
     \end{textblock*}
 
 \end{frame}
@@ -99,33 +109,9 @@
     \tableofcontents
 \end{frame}
 
-\subsection{Einführung}
-\begin{frame}
-    \frametitle{Wiso, Weshalb, Warum?}
-    \begin{center}
-        \includegraphics[width=0.8\textwidth]{Bilder/docker-why.png}
-    \end{center}\pause
-    \begin{center}
-        "a sandboxed process on your machine that is isolated from all other processes on the host machine"
-    \end{center}\pause
-    \begin{center}
-        "It works on my computer"
-    \end{center}\pause
-    \begin{center}
-        "faster onboarding and testing while also simplifying the deployment of services"
-    \end{center}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Wiso, Weshalb, Warum?}
-    \begin{center}
-        \includegraphics[width=0.8\textwidth]{Bilder/Meme.png}
-    \end{center}\pause
-\end{frame}
-
+\section{Einführung}
 \begin{frame}[t]
-    \frametitle{Wer ist Moby Dock?}\pause
-    %% TODO: witziger
+    \frametitle{Das Wichtigste zuerst}\pause
     \only<2>{\begin{figure}[h]
         \centering
         \includegraphics[width=0.8\textwidth]{Bilder/mobydocker.jpg}
@@ -137,6 +123,29 @@
         \caption*{Wettbewerb zum Icon für Docker}
     \end{figure}
     }
+\end{frame}
+
+\begin{frame}
+    \frametitle{Wiso, Weshalb, Warum?}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{Bilder/docker-why.png}
+    \end{center}\pause
+    \begin{center}
+        "a sandboxed process on your machine that is isolated from all other processes on the host machine"
+    \end{center}\pause
+    \begin{center}
+        "faster onboarding and testing while also simplifying the deployment of services"
+    \end{center}\pause
+    \begin{center}
+        "Nachdem ich im letzten Talk öffentlichkeitswirksam meine Docker-Compose Config versemmelt habe, forder ich hiermit für nächstes Semester eine Einführung in Docker, damit mir, das nicht nochmal passiert" - Tim Hegemann
+    \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Wiso, Weshalb, Warum?}
+    \begin{center}
+        \includegraphics[height=0.8\textheight]{Bilder/Meme.png}
+    \end{center}
 \end{frame}
 
 \begin{frame}[t]
@@ -155,16 +164,15 @@
 
 \begin{frame}[t]
     \frametitle{Wichtige Begriffe}
-    
-    \begin{block}{Container}
-        Umgebung in der die tatsächliche Anwendung läuft
-    \end{block} 
+    \begin{block}{Dockerfile}
+        Anleitung, um ein Image zu erstellen
+    \end{block}
     \begin{block}{Image}
         Blaupausen, um einen Container zu erstellen
     \end{block}
-    \begin{block}{Dockerfile}
-        Anleitung, um ein Image zu erstellen
-    \end{block}\pause
+    \begin{block}{Container}
+        Umgebung in der die tatsächliche Anwendung läuft
+    \end{block} \pause
     \begin{block}{Registry}
         z.B. Docker Hub, EAC....
         Ort an dem viele verschindene Images gespeichert und geteilt werden können
@@ -201,7 +209,7 @@
 \end{minted}
 \end{frame}
 
-\subsection{Dockerfile}
+\section{Dockerfile}
 \begin{frame}[c]
     \frametitle{Zusammenhang der Docker Komponenten}
     \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf_dark.png}
@@ -213,19 +221,12 @@
         \item Anleitung um ein Image zu erstellen
         %% Mit einem Dockerfile kann man den Inhalt des Containers configurieren
         \item hießt standardmäßig 'Dockerfile'
+        \item \code{INSTRUCTION ARG1 ...}
     \end{itemize}
-    \only<3>{\codeTour}
+    \only<1>{\codeTour}
 
     ein beispielhaftes \code{Dockerfile}: 
     \inputminted[fontsize=\footnotesize, frame=lines]{Dockerfile}{../examples/Dockerfile}\medskip 
-    \pause
-    \only<2>{
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.6\textwidth]{Bilder/Hadolint.png}
-        \caption*{Plugin für die Arbeit mit Docker}
-    \end{figure}
-    }
     \pause
     Weitere Informationen und Instruction
     \href{https://docs.docker.com/reference/dockerfile/#overview}{https://docs.docker.com/reference/dockerfile/}
@@ -244,22 +245,22 @@
     \frametitle{docker build Befehl}
     \code{docker build [OPTIONS] PATH | URL | -} 
     
-    \-  \ Erstelle ein Image aus einem Dockerfile
-
+    \-  \ Erstelle ein Image aus einem Dockerfile\vspace{5pt}
+    
     \code{[OPTIONS]}
-    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-f, --file string}, leftmargin=!]
-        \item[\desclabel{-t, --tag stringArray}] Name und optionaler Tag für das Image (format: "name:tag")
-        \item[\desclabel{-f, --file string}] Name des Dockerfile
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-f, -\,-file string}, leftmargin=!]
+        \item[\desclabel{-t, -\,-tag stringArray}] Name und optionaler Tag für das Image (format: "name:tag")
+        \item[\desclabel{-f, -\,-file string}] Name des Dockerfile
         \item[...] 
     \end{description}
     
     \code{PATH} Pfad zum Build Kontext (Ordner), meistens \code{.}
-
+    \pause
     Beispiele
     \begin{minted}[fontsize=\small]{bash}
     docker build . # 'Dockerfile' im aktuellen Ordner
     docker build -t myimage:v1 . 
-    docker build -f Docker.cmd . 
+    docker build -f Dockerfile.cmd . 
     docker build FastAPI
     \end{minted}
     \medskip
@@ -272,16 +273,16 @@
     \terminal
     \begin{columns}
         \begin{column}{0.5\textwidth}
-            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.single}
-        \end{column}
-        \begin{column}{0.5\textwidth}  %%<--- here
             \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.multi}
         \end{column}
+        \begin{column}{0.5\textwidth}
+            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.single}
+        \end{column}
     \end{columns}
-    \medskip
+    \medskip\pause
 \begin{minted}{bash}
-> docker build -t example:single -f Dockerfile.single .
 > docker build -t example:multi -f Dockerfile.multi .
+> docker build -t example:single -f Dockerfile.single .
 # Vergleicht die Build-time
 
 # Vergleicht die Größe - Wie?
@@ -294,10 +295,10 @@
     \frametitle{RUN}
     \begin{columns}
         \begin{column}{0.5\textwidth}
-            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.single}
+            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.multi}
         \end{column}
         \begin{column}{0.5\textwidth}
-            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.multi}
+            \inputminted[fontsize=\scriptsize, frame=lines]{dockerfile}{../examples/Dockerfile.single}
         \end{column}
     \end{columns}
     \medskip
@@ -350,11 +351,11 @@
     \begin{itemize}
         \item beide definieren den, was nach Container start ausgeführt wird
         \item \code{CMD} kann überschrieben werden
-        \item \code{ENTRYPOINT} bestimmt den Befehl, neue Parameter werden angehangen
+        \item \code{ENTRYPOINT} bestimmt den Befehl(Executable), neue Parameter werden angehangen
     \end{itemize}
 \end{frame}
 
-\subsection{Einfache Container}
+
 \begin{frame}[c]
     \frametitle{Zusammenhang der Docker Komponenten}
     %% TODO: Gimp Zusammenhang Image haben wir jetzt, wie wird aus dem Image ein Conatiner
@@ -365,19 +366,19 @@
     \frametitle{docker run Befehl}
     \code{docker run [OPTIONS] IMAGE [COMMAND] [ARG...]}
 
-    \-  \ Erstelle und starte einen Container von einem Image
+    \-  \ Erstelle und starte einen Container von einem Image\vspace{5pt}
 
     \code{[OPTIONS]}
-    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{--mount mountm}, leftmargin=!]
-        \item[\desclabel{-d}] Container vom Terminal lösen (im Hintergrund laufen lassen)
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-\,-mount mountm}, leftmargin=!]
+        \item[\desclabel{-d}] Container vom Terminal lösen
+        \item[\desclabel{-\,-name}] Container bennen
         \item[\desclabel{-it}] Interaktives Terminal im Container öffnen
         \item[\desclabel{-e}] Umgebungsvariablen setzen
-        \item[\desclabel{-w}] Provides an execution directory inside the container
         \item[\desclabel{-p [host]:[port]}] Port(s) veröffentlichen
         \item[\desclabel{-P}] Alle Ports veröffentlichen
-        \item[\desclabel{--rm}] Container automatisch nach Beenden entfernen
-        \item[] \item[\desclabel{--mount mount}] Dateisystem and den Container mounten
-        \item[\desclabel{-v, --volume list}] Bind mount ein Volume
+        \item[\desclabel{-\,-rm}] Container nach Beenden entfernen
+    \item[\desclabel{-\,-mount mount}] Dateisystem and den Container mounten
+        \item[\desclabel{-v, -\,-volume list}] Bind mount ein Volume
         \item[...] 
     \end{description}
     \code{IMAGE} Referenz zum Image (Tag oder Id/Hash)
@@ -385,18 +386,17 @@
 
 \begin{frame}[plain]
     \frametitle{Python / FastAPI}
-    \begin{textblock*}{\paperwidth}(0cm,1.5cm) % {block width}(xcoord, ycoord)
-        \includegraphics[width=\paperwidth]{Bilder/Fastapi.png}
+    \begin{textblock*}{\paperwidth}(1cm, 2cm) % {block width}(xcoord, ycoord)
+        \includegraphics[width=0.85\paperwidth]{Bilder/Fastapi.png}
         \end{textblock*}
 \end{frame}
 
 
-\subsection{Python (FastAPI)}
+\subsection{Beispiel: Python (FastAPI) \& Basic Befehle}
 \begin{frame}[fragile]
     \codeTour
     \frametitle{Python FastAPI im Conatiner}
-    %% TODO: CodeTour zum Dockerfile oder Kommentare
-    %% Mention Copy statments
+
     \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/FastAPI/Dockerfile}
 \end{frame}
 
@@ -406,34 +406,33 @@
 \begin{minted}{bash}
 > cd examples/FastAPI
 > docker build -t fastapiapp:v1 .
-> docker run -d --name backend -p 8000:80 fastapiapp:v1
+> docker run --name backend -p 8000:80 fastapiapp:v1
 # Open http://localhost:8000/docs
+> docker start backend
+> docker stop backend
+> docker rm backend
+> docker run -d --name --rm backend \
+    -p 8000:80 fastapiapp:v1
 > docker exec -it backend bash
 # 'exit' um den Container zu verlassen
-> docker stop backend
-> docker start backend
-> docker rm backend
-> docker run -it --name backend \
-    -p 8000:80 fastapiapp:v1 bash
 \end{minted}
     %% stoppen
     %% Überleitung: beim zweiten start Songs hinzugügen, 
     %% nach dem remove neuen Container, der hat die Songs nicht
-    %% vllt Docker mit ubuntu for exec, it, start, stop, name
 \end{frame}
 
 \begin{frame}[fragile]
     \frametitle{docker exec Befehl}
     \code{docker exec [OPTIONS] CONTAINER COMMAND [ARG...]}
 
-    \-  \ Befehl in einem laufenden Container ausführen
+    \-  \ Befehl in einem laufenden Container ausführen\vspace{5pt}
 
     \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
         \item[\desclabel{-d}] im Hintergund ausführen
         \item[\desclabel{-e}] env Variablen setzen
         \item[\desclabel{-it}] Interaktives Terminal öffnen
-        \item[\desclabel{-w, --workdir string}] Aktuelles Verzeichnis im Container ändern
+        \item[\desclabel{-w, -\,-workdir string}] Aktuelles Verzeichnis im Container ändern
         \item[...] 
     \end{description}
 
@@ -471,21 +470,21 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
     \frametitle{docker remove Befehle}
     \code{docker rm [OPTIONS] CONTAINER [CONTAINER...]}
 
-    \- \ Entferne einen oder mehrere Container
+    \- \ Entferne einen oder mehrere Container\vspace{5pt}
 
     \code{[OPTIONS]}
-    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
-        \item[\desclabel{-f, --force}] Erzwinge das Entfernen
-        \item[\desclabel{-v, --volumes}] Verbundene anonyme Mounts auch entfernen
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-v, -\,-volumess}, leftmargin=!]
+        \item[\desclabel{-f, -\,-force}] Erzwinge das Entfernen
+        \item[\desclabel{-v, -\,-volumes}] Verbundene anonyme Mounts auch entfernen
     \end{description}\medskip\medskip
     \code{docker rmi [OPTIONS] IMAGE [IMAGE...]}
 
-    \- \ Entferne ein oder mehrere Images
+    \- \ Entferne ein oder mehrere Images\vspace{5pt}
 
     \code{[OPTIONS]}
-    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
-        \item[\desclabel{-f, --force}] Erzwinge das Entfernen
-        \item[\desclabel{--no-prune}] Do not delete untagged parents
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-\,-no-prunes}, leftmargin=!]
+        \item[\desclabel{-f, -\,-force}] Erzwinge das Entfernen
+        \item[\desclabel{-\,-no-prune}] Do not delete untagged parents
     \end{description}
 \end{frame}
 
@@ -504,8 +503,9 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
 \pause\medskip
     \begin{itemize}
         \item der Song ist im Container gespeichert, nicht im Image
-        \item \code{--rm} löscht den Container nach Beendigung
+        \item \code{-\,-rm} löscht den Container nach Beendigung
     \end{itemize}
+    \vspace{0.6cm}
     Wie bekomme ich den Song permantent gespeichert?
 \end{frame}
 
@@ -524,7 +524,7 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
     -p 8080:80 fastapiapp:v2
 # Öffne localhost:8080/docs -> get_songs() hat neue Songs
 
-> docker run -d --name backend --rm \
+> docker run -d -\,-name backend ,-rm \
     -p 8000:80 fastapiapp:v1
 # Öffne localhost:8000/docs -> get_songs() hat keine
 \end{minted}
@@ -534,20 +534,20 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
 \begin{frame}[t]
     \frametitle{Volumes und Mounts}
     \begin{itemize}
-        \item Docker containers are stateless by default, data inside is lost after shutdown.
-        \item both map data/storage from the host machine to data/storage in the Container for persistent storage.
+        \item Docker Container sind stateless
+        \item beide verbinden Speicher/Verzeichnisse vom der Host Maschine zu Speicher im Container
     \end{itemize} \pause
     \begin{block}{Volume}
         \begin{itemize}
-            \item are managed by Docker and stored default at \code{var/lib/docker/volumes/VOLUMENAME}
-            \item don't increase the size of the containers
-            \item simplify and allow sharing data between containers
+            \item gemanaged von Docker (standardmäßig: \code{var/lib/docker/volumes/VOLUMENAME})
+            \item vergrößern nicht die Container
+            \item vereinfachen und ermöglichen das teilen von Daten zwischen Containern
         \end{itemize}
     \end{block} \pause
     \begin{block}{Mount}
         \begin{itemize}
-            \item a file or directory on the host machine is attached to the containers filesystem
-            \item dependant on the host machine while volumes are managed by docker
+            \item Datei/Ordner vom Host an den Container anbinden
+            \item abhängig von der Host Maschine
         \end{itemize}
     \end{block}
 \end{frame}
@@ -560,14 +560,7 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
         \item Option 2: changes commiten
         \item Option 3: Volume, wenn man die json changes behalten möchte, aber den container per se nicht
     \end{itemize}
-
-\begin{minted}{bash}
-# Quiz: why is this not working
-> docker run -d --rm --name backend \
-    -v ${PWD}/app/songs.json:/app/songs.json \
-    -p 8000:80 fastapiapp:v1
-\end{minted}
-    \pause
+\vspace{0.8cm}
 \begin{minted}{bash}
 # Note: be aware of the working directory of your app
 # in this case code 'WORKDIR /code'
@@ -578,32 +571,33 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
             
 \end{frame}
 
+\begin{frame}[t]
+    \begin{textblock*}{\paperwidth}(0.7cm,0.5cm) % {block width}(xcoord, ycoord)
+        %% TODO: gimp mark what we learnt
+        \includegraphics[width=0.9\paperwidth]{Bilder/dockercommand.png}
+    \end{textblock*}
+\end{frame}  
+
 \subsection{React}
 %% Überletung jetzt wollen wir natürlich auch noch eine Oberfläche
 
     
-\begin{frame}[plain]
+\begin{frame}[c]
     \frametitle{React}
-    \begin{textblock*}{\paperwidth}(0cm,1.5cm) % {block width}(xcoord, ycoord)
-        %% TODO: with new Songs
-        \includegraphics[width=\paperwidth]{Bilder/Webseite.png}
+    \begin{textblock*}{\paperwidth}(1cm, 2cm) % {block width}(xcoord, ycoord)
+        \includegraphics[width=0.85\paperwidth]{Bilder/Webseite.png}
     \end{textblock*}
 \end{frame}
 
-
-
-
 \begin{frame}[fragile]
     \frametitle{React - Dockerfile}
-    %% TODO: Code Tour zu dem File
     \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/React/Dockerfile}
 \end{frame}
 
 \begin{frame}[fragile]
     \frametitle{React im Container}
     \terminal
-    %% TODO: Code Tour zu dem File
-    %% TODO: prebuild image
+%% node aus container app lokal
 \begin{minted}{bash}
 > cd examples/React
 > docker build -t reactapp:dev .
@@ -614,7 +608,6 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
 # Öffne localhost:3000
 
 \end{minted}
-%% TODO: was macht nochmal Chokidar use polling
 \footnotesize (Der Container \code{backend} sollte laufen, damit die Webseite richtig funktioniert)
 \end{frame}
 
@@ -624,6 +617,7 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
     Idee: Image aufeinanderaufbauende Teile teilen, zwischen den Teilen nur die nötigen Dinge kopieren
 
     z.B. Stage 1: App compile, Stage 2: Compilierte App ausführen (kein Build context) 
+    \pause
     Vorteile
     \begin{itemize}
         \item Smaller image size
@@ -646,8 +640,9 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
 > docker build -f Dockerfile.prod -t reactapp:prod .
 > docker run -it --rm --name frontend \
     -p 1337:80 reactapp:prod
+# Öffne localhost:1337
 \end{minted}
-
+\vspace{8pt}
 Vergleiche die Größe der Images:\pause
 
 frontenddev: 832 MB
@@ -661,10 +656,17 @@ frontend: 50.9 MB
     \begin{itemize}
         \item \code{RUN} instructions mit \&\& zusammenfassen
         \item \code{COPY} sinnvoll platzieren, damit Cache best möglich genutzt werden kann
-        \item \code{ADD} nur für \code{ADD} specifische Funktionen
+        \item \code{ADD} nur für \code{ADD} spezifische Funktionen
         \item Volumes und Mounts für persistententen Speicher nutzen
         \item Multistage builds verwenden
     \end{itemize} 
+    \only<2>{
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.6\textwidth]{Bilder/Hadolint.png}
+        \caption*{Plugin für die Arbeit mit Docker}
+    \end{figure}
+    }
 \end{frame}
 
 \begin{frame}[fragile]
@@ -672,11 +674,12 @@ frontend: 50.9 MB
     \code{.dockerignore}
     \begin{itemize}
         \item vgl. .gitignore für Docker
-        \item bestimmte Datein/Ordern ausschließen
+        \item bestimmte Dateien/Ordern ausschließen
         \item geringere Image Größe
         \item kein Cache invalidation
     \end{itemize}
-    \medskip
+    \medskip\pause
+    Docker Desktop bietet eine Benutzeroberfläche für die meinsten Befehle\\\pause
     \begin{minted}{bash}
 # interaktion mit Registries
 > docker push
@@ -684,11 +687,10 @@ frontend: 50.9 MB
 # Scan auf Sicherheitslücken
 > docker scout   
 \end{minted}
-Docker Desktop bietet eine Benutzeroberfläche für die meinsten Befehle\\
 Weitere Befehle am Ende
 \end{frame}
 %% Pause alle Container stoppen, ggf kurz Docker Desktop zeigen
-
+\section{Docker Compose}
 \begin{frame}[plain]
     \begin{textblock*}{\paperwidth}(0cm,1.5cm) % {block width}(xcoord, ycoord)
         \includegraphics[width=\paperwidth]{Bilder/1200px-Docker-compose-logo.jpg}
@@ -700,15 +702,14 @@ Weitere Befehle am Ende
     \begin{block}{Was?}
         Tool um Multi-Container Anwendungen einfach auszuführen\\
         eine Konfiguration, statt in meheren Terminals alle verschiedene Container laufen zu lassen
-        
-    \end{block}
+    \end{block}\pause
     \begin{block}{Warum?}
         \begin{itemize}
             \item leichter mit mehreren Container zuarbeiten
             \item gute Portabilität
             \item schnelle Anwendungsentwicklung
         \end{itemize}
-    \end{block}
+    \end{block}\pause
     \begin{block}{Wie?}
         \begin{itemize}
             \item Definition von Services in \code{docker-compose.yml}
@@ -727,7 +728,7 @@ Weitere Befehle am Ende
     \medskip\pause
     \begin{minted}{bash}
 > docker build -t fastapiapp:v1 .
-> docker run -d --rm --name backend \
+> docker run --rm --name backend \
     -v ${PWD}/app/songs.json:/code/app/songs.json \
     -p 8000:80 fastapiapp:v1
     \end{minted}
@@ -738,6 +739,7 @@ Weitere Befehle am Ende
 
 \begin{frame}[fragile]
     \frametitle{Docker Compose Webapp}
+    \terminal
     \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/React/docker-compose.prod.yml}
 \begin{minted}{bash}
 > docker-compose -d -f docker-compose.prod.yml \
@@ -746,10 +748,18 @@ Weitere Befehle am Ende
 \medskip
 
 \begin{minted}{bash}
+> docker build -f Dockerfile.prod -t reactapp:prod .
 > docker run -it --rm -d --name frontend \
     -p 1337:80 frontend:prod
 \end{minted}
-
+\only<1>{
+    \begin{textblock*}{6cm}(1cm,1.5cm) % {block width}(xcoord, ycoord)
+        \begin{tcolorbox}[width=6cm, height=4.2cm, colback=white, colframe=white, sharp corners]
+        \centering
+        \end{tcolorbox}
+    \end{textblock*}
+}
+\only<2>{}
 \begin{textblock*}{1.3cm}(11cm,7cm) % {block width}(xcoord, ycoord)
     \huge \textcolor{red}{vs.}
 \end{textblock*}
@@ -757,29 +767,65 @@ Weitere Befehle am Ende
 
 \begin{frame}[fragile]
     \frametitle{Docker Compose Full App}
-    %% TODO: ZEile mit image statt build
+    \terminal
     \inputminted[fontsize=\footnotesize, frame=lines]{dockerfile}{../examples/docker-compose.yml}
 \begin{minted}{bash}
 > docker-compose up 
 \end{minted}
-
+\only<1>{
+    \begin{textblock*}{6cm}(1.6cm,2.8cm) % {block width}(xcoord, ycoord)
+        \begin{tcolorbox}[width=6cm, height=2.2cm, colback=white, colframe=white, sharp corners]
+        \centering
+        \end{tcolorbox}
+    \end{textblock*}
+    \begin{textblock*}{6cm}(1.6cm,5.5cm) % {block width}(xcoord, ycoord)
+        \begin{tcolorbox}[width=9cm, height=3.1cm, colback=white, colframe=white, sharp corners]
+        \centering
+        \end{tcolorbox}
+    \end{textblock*}
+}
+\only<2>{
+    \begin{textblock*}{6cm}(1.6cm,3.2cm) % {block width}(xcoord, ycoord)
+        \begin{tcolorbox}[width=6cm, height=1.8cm, colback=white, colframe=white, sharp corners]
+        \centering
+        \end{tcolorbox}
+    \end{textblock*}
+    \begin{textblock*}{6cm}(1.6cm,5.9cm) % {block width}(xcoord, ycoord)
+        \begin{tcolorbox}[width=9cm, height=2.7cm, colback=white, colframe=white, sharp corners]
+        \centering
+        \end{tcolorbox}
+    \end{textblock*}
+}
+\only<3>{
+    \begin{textblock*}{6cm}(1.6cm,4.4cm) % {block width}(xcoord, ycoord)
+        \begin{tcolorbox}[width=6cm, height=0.6cm, colback=white, colframe=white, sharp corners]
+        \centering
+        \end{tcolorbox}
+    \end{textblock*}
+    \begin{textblock*}{6cm}(1.6cm,7.1cm) % {block width}(xcoord, ycoord)
+        \begin{tcolorbox}[width=9cm, height=1.5cm, colback=white, colframe=white, sharp corners]
+        \centering
+        \end{tcolorbox}
+    \end{textblock*}
+}
+\only<4>{}
 \end{frame}
+
 
 \begin{frame}
     \frametitle{docker-compose up Befehl}
     \code{docker-compose up [OPTIONS] [SERVICE...]}
 
-    \- \ Erstellen, (neu)erstellen, starten und an Container eines Dienstes anhängen
+    \- \ (Neu)Erstellen und starten der Services\vspace{5pt}
 
     \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
-        \item[\desclabel{-d, --detach}] Führe die Container im Hintergrund aus
-        \item[\desclabel{--build}] Baue die Images, bevor die Container gestartet werden
-        \item[\desclabel{--no-build}] Baue kein Image, selbst wenn es fehlt
-        \item[\desclabel{--force-recreate}] Erstelle Container neu, auch wenn deren Konfiguration und Image sich nicht geändert haben
-        \item[\desclabel{--no-recreate}] Erstelle Container nicht neu, wenn sie bereits existieren
-        \item[\desclabel{--remove-orphans}] Entferne Container von Diensten, die nicht in der Compose-Datei definiert sind
-        \item[\desclabel{-V, --renew-anon-volumes}] Erstelle anonyme Volumes neu, anstatt Daten von vorherigen Containern zu übernehmen
+        \item[\desclabel{-d, -\,-detach}] Führe die Container im Hintergrund aus
+        \item[\desclabel{-\,-no-build}] Baue kein Image, selbst wenn es fehlt
+        \item[\desclabel{-\,-force-recreate}] Erstelle Container neu, auch wenn deren Konfiguration und Image sich nicht geändert haben
+        \item[\desclabel{-\,-no-recreate}] Erstelle Container nicht neu, wenn sie bereits existieren
+        \item[\desclabel{-V, -\,-renew-anon-volumes}] Erstelle anonyme Volumes neu, anstatt Daten von vorherigen Containern zu übernehmen
+        \item[...]
     \end{description}
 \end{frame}
 
@@ -787,25 +833,25 @@ Weitere Befehle am Ende
     \frametitle{docker-compose down Befehl}
     \code{docker-compose down [OPTIONS]}
 
-    \- \ Stoppt und entfernt Container, Netzwerke, Images und Volumes
+    \- \ Stoppt und entfernt Container, Netzwerke, Images und Volumes\vspace{5pt}
 
     \code{[OPTIONS]}
-    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
-        \item[\desclabel{--rmi type}] Entfernt Images. Der Typ muss einer der folgenden sein:
-        \begin{description}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-\,-rmi type}, leftmargin=!]
+        \item[\desclabel{-\,-rmi type}] Entfernt Images. folgende Typen:
+        \begin{description}[labelindent=-0.5cm, style=unboxed, labelwidth=\widthof{locall}, leftmargin=!]
             \item[\desclabel{all}] Entfernt alle Images, die von einem Dienst verwendet werden
             \item[\desclabel{local}] Entfernt nur Images, die kein benutzerdefiniertes Tag haben
         \end{description}
-        \item[\desclabel{-v, --volumes}] Entfernt benannte Volumes, die im `volumes` Abschnitt der Compose-Datei deklariert sind
-        \item[\desclabel{--remove-orphans}] Entfernt Container für Dienste, die nicht in der Compose-Datei definiert sind
+        \item[\desclabel{-v, -\,-volumes}] Entfernt benannte Volumes (Abschnitt `volumes`)
+        \item[...]
     \end{description}
 \end{frame}
 
-%% erkläre services
 \begin{frame}[fragile]
-    \frametitle{Weiter Docker Compose Befehle}
+    \frametitle{Weitere Docker Compose Befehle}
     \code{docker-compose build [OPTIONS] [SERVICE...]}\\
     \-  \ Build oder rebuild Services \\
+
     \code{docker-compose start [SERVICE...]}\\
     \-  \ Starte existierende Containers \\
 
@@ -821,69 +867,66 @@ Weitere Befehle am Ende
     ...
 \end{frame}
 
+\section{Weitere Befehle}
 \begin{frame}[t]
-    \begin{textblock*}{\paperwidth}(0cm,1.5cm) % {block width}(xcoord, ycoord)
-        \includegraphics[width=\paperwidth]{Bilder/Docker-Ablauf.png}
-    \end{textblock*}
-\end{frame}
-
-\begin{frame}[t]
-    \frametitle{Andere UseCases - Docker}
-    \begin{itemize}
-        \item OpenDrone Map
-        \item Datenbanken in Containern
-        \item Kubernetes Cluster
-        \item Unternehmen, die wohl Docker nutzen: Airbnb, Spotify, PayPal, Uber, Netflix
-        \item \href{https://www.simplilearn.com/docker-use-cases-article}{UseCasees}
-        \item deply your app on a cloud hosted frame work
-    \end{itemize}
-\end{frame}
-\begin{frame}[t]
-    \frametitle{Andere UseCases - Docker Compose}
-    \begin{itemize}
-        \item OpenDrone Map
-        \item Nathalies Kubernetes Arbeit
-        \item Felix Hiwi arbeit
-        \item deply your app on a cloud hosted frame work
-    \end{itemize}
-\end{frame}
-
-\subsection{Weitere Befehle}
-\begin{frame}[t]
-    \begin{textblock*}{\paperwidth}(0cm,1.5cm) % {block width}(xcoord, ycoord)
-        \includegraphics[width=\paperwidth]{Bilder/dockercommand.png}
+    \begin{textblock*}{\paperwidth}(0.7cm,0.5cm) % {block width}(xcoord, ycoord)
+        \includegraphics[width=0.9\paperwidth]{Bilder/dockercommand.png}
     \end{textblock*}
 \end{frame} 
 
-\begin{frame}[fragile]
-    \frametitle{docker commit Befehl}
-    \code{docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]}
+\begin{frame}
+    \frametitle{Weitere Befehle}
+    \code{docker images [OPTIONS] [REPOSITORY[:TAG]]}
 
-    \- \ Erstelle ein neues Image aus dem aktuellen Containerzustand
+    \- \ Auflistung von Images\vspace{5pt}
 
     \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
-        \item[\desclabel{-c, --change list}] Verwende Dockerfile instruction zum erstellen
-        \item[\desclabel{-m, --message string}] Commit Nachricht
-        \item[\desclabel{-p, --pause}] Pausere den Container während des commits (default true)
+        \item[\desclabel{-a, -\,-all}] Zeige alle Images (default: intermediate Images versteckt)
+        \item[\desclabel{-f, -\,-filter filter}] Filter das Ergebnis
+        \item[\desclabel{-\,-format string}] Ausgabe formatieren
+    \end{description}\medskip
+    \code{docker ps [OPTIONS]}
+
+    \- \ Auflistung von laufenden Containern\vspace{5pt}
+
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
+        \item[\desclabel{-a, -\,-all}] Zeige alle Container (auch gestoppte)
+        \item[\desclabel{-f, -\,-filter filter}] Filter das Ergebnis
+        \item[\desclabel{-\,-format string}] Ausgabe formatieren
+        \item[\desclabel{-n, -\,-last int}] Zeige nur die letzten n Container
     \end{description}
-    \medskip
+\end{frame} 
+
+\begin{frame}[fragile]
+    \frametitle{Weitere Befehle}
+    \code{docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]}
+
+    \- \ Erstelle ein neues Image aus dem aktuellen Containerzustand\vspace{5pt}
+
+    \code{[OPTIONS]}
+    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
+        \item[\desclabel{-c, -\,-change list}] Verwende Dockerfile instruction zum erstellen
+        \item[\desclabel{-m, -\,-message string}] Commit Nachricht
+        \item[\desclabel{-p, -\,-pause}] Pausere den Container während des commits (default true)
+    \end{description}
+    \medskip\medskip
     \code{docker tag SOURCE\_IMAGE[:TAG] TARGET\_IMAGE[:TAG]}\\
     \-  \ Erstelle einen neuen Tag für ein Image \\
     \-  \ \verb|docker image tag 9c62f3337754 ubuntu:v3|\medskip
 \end{frame}
 
 \begin{frame}[fragile]
-    \frametitle{docker cp Befehl und mehr }
+    \frametitle{Weitere Befehle}
     \code{docker cp [OPTIONS] CONTAINER:SRC\_PATH DEST\_PATH|-}
 
-    \- \ Kopiere Datein zwichen Container und lokalem Speicher
+    \- \ Kopiere Dateien zwichen Container und lokalem Speicher\vspace{5pt}
 
-    \code{[OPTIONS]}\\
     \code{CONTAINER:SRC\_PATH DEST\_PATH|-} Kopiere von Conatiner zu lokal\\
     \code{SRC\_PATH|- CONTAINER:DEST\_PATH} Kopiere von lokal zu Container\\
     \code{-} Nutze tar archive
-    \medskip
+    \medskip\medskip
     
     \code{docker import [OPTIONS] file | URL | - [REPOSITORY[:TAG]]}\\
     \-  \ Erstelle ein Image aus einer tar-Datei  \medskip
@@ -893,31 +936,16 @@ Weitere Befehle am Ende
 
 \end{frame}
 
-\begin{frame}
-    \frametitle{docker images Befehl}
-    \code{docker images [OPTIONS] [REPOSITORY[:TAG]]}
-
-    \- \ Auflistung von Images
-
-    \code{[OPTIONS]}
-    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
-        \item[\desclabel{-a, --all}] Zeige alle Images (default: intermediate Images versteckt)
-        \item[\desclabel{-f, --filter filter}] Filter das Ergebnis
-        \item[\desclabel{--format string}] Ausgabe formatieren
-    \end{description}\medskip
-    \code{docker ps [OPTIONS]}
-
-    \- \ Auflistung von laufenden Containern
-
-    \code{[OPTIONS]}
-    \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
-        \item[\desclabel{-a, --all}] Zeige alle Container (auch gestoppte)
-        \item[\desclabel{-f, --filter filter}] Filter das Ergebnis
-        \item[\desclabel{--format string}] Ausgabe formatieren
-        \item[\desclabel{-n, --last int}] Zeige nur die letzten n Container
-        \item[\desclabel{-s, --size}] Zeige die Größe an
-    \end{description}
-\end{frame} 
+\begin{frame}[t]
+    \frametitle{Andere UseCases}
+    \begin{itemize}
+        \item \href{https://github.com/OpenDroneMap/WebODM?tab=readme-ov-file}{OpenDrone Map}
+        \item Datenbanken in Containern
+        \item Kubernetes Cluster
+        \item Unternehmen, die wohl Docker nutzen: Airbnb, Spotify, PayPal, Uber, Netflix
+        \item \href{https://www.simplilearn.com/docker-use-cases-article}{UseCasees}
+    \end{itemize}
+\end{frame}
 
 \begin{frame}[t]
     \frametitle{Coole Quellen und so weiter}

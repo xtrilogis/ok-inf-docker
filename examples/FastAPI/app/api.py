@@ -33,7 +33,9 @@ def update_song_db(songs: List[Song]):
 
 origins = [
     "http://localhost:3000",
-    "localhost:3000"
+    "localhost:3000",
+    "http://localhost:1337",
+    "localhost:1337"
 ]
 
 

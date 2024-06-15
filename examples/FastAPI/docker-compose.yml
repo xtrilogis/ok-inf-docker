@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # image: fastapiapp:v2
+    # image: fastapiapp:v1
     ports:
       - '8000:80'
     volumes:
