@@ -125,7 +125,7 @@
     }
 \end{frame}
 
-\begin{frame}
+\begin{frame}[t]
     \frametitle{Wiso, Weshalb, Warum?}
     \begin{center}
         \includegraphics[width=0.8\textwidth]{Bilder/docker-why.png}
@@ -212,7 +212,7 @@
 \section{Dockerfile}
 \begin{frame}[c]
     \frametitle{Zusammenhang der Docker Komponenten}
-    \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf_dark.png}
+    \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf_file.png}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -233,12 +233,11 @@
 
 \end{frame}
 
-
+\section{Einfache Container}
 %% Überleitung: Wie kommt man jetzt vom Dockerfile zum Image
 \begin{frame}[c]
     \frametitle{Zusammenhang der Docker Komponenten}
-    %% TODO: Gimp, Hightlight image as well, and mark Arrow
-    \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf_dark.png}
+    \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf_build.png}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -358,8 +357,8 @@
 
 \begin{frame}[c]
     \frametitle{Zusammenhang der Docker Komponenten}
-    %% TODO: Gimp Zusammenhang Image haben wir jetzt, wie wird aus dem Image ein Conatiner
-    \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf_dark.png}
+    %% Zusammenhang Image haben wir jetzt, wie wird aus dem Image ein Conatiner
+    \includegraphics[width=1\textwidth]{Bilder/Docker-Ablauf_full.png}
 \end{frame}
 
 \begin{frame}
@@ -445,7 +444,6 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
     
 \end{frame}
 
-%% commit
 \begin{frame}
     \frametitle{docker container control Befehl}
 
@@ -573,8 +571,7 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
 
 \begin{frame}[t]
     \begin{textblock*}{\paperwidth}(0.7cm,0.5cm) % {block width}(xcoord, ycoord)
-        %% TODO: gimp mark what we learnt
-        \includegraphics[width=0.9\paperwidth]{Bilder/dockercommand.png}
+        \includegraphics[width=0.9\paperwidth]{Bilder/Commands_Zf.png}
     \end{textblock*}
 \end{frame}  
 
