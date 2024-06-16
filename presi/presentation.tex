@@ -64,17 +64,11 @@
 
 \begin{document}
 
-%% TODO: layout element, dass kennzeichnet, wann man ins terminal wechselt vgl. "Vorlesung" bei EAE
-%% TODO: how to make one list item without overhead -> macro?
-%% einheitliche Sprache
-%% teerminal Bild gleiches Format
-
 \begin{frame}[plain]
-    \vfill
-    \begin{center}
-        \includegraphics[width=1\textwidth]{Bilder/docker-how.png}
-    \end{center}
-    \vfill
+    \begin{textblock*}{\paperwidth}(0.0cm,0.0cm) % {block width}(xcoord, ycoord)
+        \includegraphics[width=0.99\paperwidth]{Bilder/title.png}
+    \end{textblock*}
+
 \end{frame}
 
 \begin{frame}[t]
@@ -112,15 +106,15 @@
 \section{Einführung}
 \begin{frame}[t]
     \frametitle{Das Wichtigste zuerst}\pause
-    \only<2>{\begin{figure}[h]
-        \centering
-        \includegraphics[width=0.8\textwidth]{Bilder/mobydocker.jpg}
-    \end{figure}
+    \only<2>{
+        \begin{textblock*}{\paperwidth}(1.8cm,1.5cm) % {block width}(xcoord, ycoord)
+            \includegraphics[width=0.8\paperwidth]{Bilder/mobydocker.jpg}
+        \end{textblock*}    
     }
     \only<3>{\begin{figure}[h]
         \centering
         \includegraphics[width=0.95\textwidth]{Bilder/wettbewerb.png}
-        \caption*{Wettbewerb zum Icon für Docker}
+        \caption*{Wettbewerb zum Icon für Docker\\ Gewonnen hat: Moby Dock}
     \end{figure}
     }
 \end{frame}
@@ -181,15 +175,13 @@
         Orchestrierungstool für Dockerfile\newline
         Wrapper für einen oder mehrere Container
     \end{block}
-    %%\begin{block}{Docker Desktop}
-    %%    - UI für alles was man in der CLI machen kann (?) %% TODO: 
-    %%\end{block}
 \end{frame}
 
 \begin{frame}[c]
     \frametitle{Zusammenhang der Docker Komponenten}
         \includegraphics<1>[width=1\textwidth]{Bilder/Docker-Ablauf.png}
-        \includegraphics<2>[width=1\textwidth]{Bilder/dockercommand.png}
+        \includegraphics<2>[width=1\textwidth]{Bilder/Commands.png}
+        \includegraphics<3>[width=1\textwidth]{Bilder/Commands_Ziel.png}
 \end{frame}
 
 \begin{frame}[c]
