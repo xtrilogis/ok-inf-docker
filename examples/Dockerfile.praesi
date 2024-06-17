@@ -4,9 +4,6 @@ FROM image[:version/tag]
 # hier ein beispiel, wie ARG gesetzt wrid
 ARG name
 
-# define Metadata
-LABEL key=value 
-
 # for injection at runtime use --env or -e
 ENV NAME=value
 
@@ -22,15 +19,13 @@ COPY [--chown=user] source destination/
 # additionally add remote url (e.g. git repos) or compressed soures
 ADD [--chown=...] source destination/
 
-# Execute commands during build time
-RUN command \
-	&& second command
-
 # Define a port the container listens to
 EXPOSE port[/protocol]
 
-# change the default shell *
-SHELL ["executable", "parameters"] 
+# Execute commands during build time
+RUN command arg1\
+	&& command2 arg 1 ..
+
 # Exeute commands in instantiated containers
 ENTRYPOINT ["executable"] # add params as needed
 # and or
