@@ -33,7 +33,7 @@
 % Redefine \href to include underlining
 \renewcommand{\href}[2]{\textcolor{blue}{\uline{#2}}}
 
-\newcommand{\code}[1]{\colorbox{gray!10}{\texttt{#1}}}
+\newcommand{\code}[1]{\colorbox{gray!15}{\texttt{#1}}}
 \newcommand{\desclabel}[1]{\textcolor{cyan}{#1}}
 \newcommand{\codeTour}{
     \begin{textblock*}{1.3cm}(11cm,0.5cm) % {block width}(xcoord, ycoord)
@@ -75,7 +75,7 @@
     \frametitle{Disclaimer}
     \begin{itemize}
         \item bei weitem nicht alles zum Thema Docker
-        \item nur Allgemeine Grundlage
+        \item Allgemeine Grundlage
     \end{itemize}
 
     \begin{textblock*}{4.5cm}(1.5cm,4cm) % {block width}(xcoord, ycoord)
@@ -118,7 +118,7 @@
         \caption*{Wettbewerb zum Icon für Docker\\ Gewonnen hat: Moby Dock}
     \end{figure}
     \pause
-    \href{https://www.docker.com/company/newsroom/media-resources/}{Offizielle Logo Guide Line}
+    \href{https://www.docker.com/company/newsroom/media-resources/}{Offizielle Logo Guideline}
     
     
     
@@ -243,15 +243,16 @@
     
     \-  \ Erstelle ein Image aus einem Dockerfile\vspace{5pt}
     
-    \code{[OPTIONS]}
+    \-  \  \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-f, -\,-file string}, leftmargin=!]
         \item[\desclabel{-t, -\,-tag stringArray}] Name und optionaler Tag für das Image (format: "name:tag")
         \item[\desclabel{-f, -\,-file string}] Name des Dockerfile
         \item[...] 
     \end{description}
     
-    \code{PATH} Pfad zum Build Kontext (Ordner), meistens \code{.}
+    \-  \ \code{PATH} Pfad zum Build Kontext (Ordner), meistens \code{.}
     \pause
+    
     Beispiele
     \begin{minted}[fontsize=\small]{bash}
     docker build . # 'Dockerfile' im aktuellen Ordner
@@ -364,13 +365,13 @@
 
     \-  \ Erstelle und starte einen Container von einem Image\vspace{5pt}
 
-    \only<2>{\code{[OPTIONS]}
+    \only<2>{\-  \ \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-\,-mount mountm}, leftmargin=!]
         \item[\desclabel{-d/-a}] Container vom Terminal lösen/anheften
         \item[\desclabel{-\,-name}] Container bennen
         \item[\desclabel{-it}] Interaktives Terminal im Container öffnen
         \item[\desclabel{-e}] Umgebungsvariablen setzen
-        \item[\desclabel{-p [host]:[port]}] Port(s) veröffentlichen (\small Hostport:Containerport)
+        \item[\desclabel{-p [host]:[port]}] Port(s) veröffentlichen ({\footnotesize Hostport:Containerport})
         \item[\desclabel{-P}] Alle Ports veröffentlichen
         \item[\desclabel{-\,-rm}] Container nach Beenden entfernen
     \item[\desclabel{-\,-mount mount}] Dateisystem and den Container mounten
@@ -378,7 +379,7 @@
         \item[...] 
     \end{description}
     }
-    \code{IMAGE} Referenz zum Image (Tag oder Id/Hash)
+    \-  \ \code{IMAGE} Referenz zum Image (Tag oder Id/Hash)
 \end{frame}
 
 \begin{frame}[plain]
@@ -425,7 +426,7 @@
 
     \-  \ Befehl in einem laufenden Container ausführen\vspace{5pt}
 
-    \code{[OPTIONS]}
+    \-  \ \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
         \item[\desclabel{-d}] im Hintergund ausführen
         \item[\desclabel{-e}] env Variablen setzen
@@ -469,7 +470,7 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
 
     \- \ Entferne einen oder mehrere Container\vspace{5pt}
 
-    \code{[OPTIONS]}
+    \-  \ \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-v, -\,-volumess}, leftmargin=!]
         \item[\desclabel{-f, -\,-force}] Erzwinge das Entfernen
         \item[\desclabel{-v, -\,-volumes}] Verbundene anonyme Mounts auch entfernen
@@ -478,7 +479,7 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
 
     \- \ Entferne ein oder mehrere Images\vspace{5pt}
 
-    \code{[OPTIONS]}
+    \-  \ \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-\,-no-prunes}, leftmargin=!]
         \item[\desclabel{-f, -\,-force}] Erzwinge das Entfernen
         \item[\desclabel{-\,-no-prune}] Do not delete untagged parents
@@ -617,8 +618,8 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
     Stage 1: App kompilieren
     
     Stage 2: Compilierte App ausführen (kein Build context) 
-    \pause
-    \vspace{8pt}
+    \vspace{8pt}\pause
+
     Vorteile
     \begin{itemize}
         \item Kleiner Images
@@ -782,7 +783,7 @@ frontend: 50.9 MB
 
     \- \ (Neu)Erstellen und starten der Services\vspace{5pt}
 
-    \code{[OPTIONS]}
+    \-  \ \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
         \item[\desclabel{-d, -\,-detach}] Führe die Container im Hintergrund aus
         \item[\desclabel{-\,-no-build}] Baue kein Image, selbst wenn es fehlt
@@ -799,7 +800,7 @@ frontend: 50.9 MB
 
     \- \ Stoppt und entfernt Container, Netzwerke, Images und Volumes\vspace{5pt}
 
-    \code{[OPTIONS]}
+    \-  \ \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-\,-rmi type}, leftmargin=!]
         \item[\desclabel{-\,-rmi type}] Entfernt Images. folgende Typen:
         \begin{description}[labelindent=-0.5cm, style=unboxed, labelwidth=\widthof{locall}, leftmargin=!]
@@ -844,7 +845,7 @@ frontend: 50.9 MB
 
     \- \ Auflistung von Images\vspace{5pt}
 
-    \code{[OPTIONS]}
+    \-  \ \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
         \item[\desclabel{-a, -\,-all}] Zeige alle Images (default: intermediate Images versteckt)
         \item[\desclabel{-f, -\,-filter filter}] Filter das Ergebnis
@@ -854,7 +855,7 @@ frontend: 50.9 MB
 
     \- \ Auflistung von laufenden Containern\vspace{5pt}
 
-    \code{[OPTIONS]}
+    \-  \ \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
         \item[\desclabel{-a, -\,-all}] Zeige alle Container (auch gestoppte)
         \item[\desclabel{-f, -\,-filter filter}] Filter das Ergebnis
@@ -869,7 +870,7 @@ frontend: 50.9 MB
 
     \- \ Erstelle ein neues Image aus dem aktuellen Containerzustand\vspace{5pt}
 
-    \code{[OPTIONS]}
+    \-  \ \code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{bla}, leftmargin=!]
         \item[\desclabel{-c, -\,-change list}] Verwende Dockerfile instruction zum erstellen
         \item[\desclabel{-m, -\,-message string}] Commit Nachricht
@@ -884,12 +885,13 @@ frontend: 50.9 MB
 \begin{frame}[fragile]
     \frametitle{Weitere Befehle}
     \code{docker cp [OPTIONS] CONTAINER:SRC\_PATH DEST\_PATH|-}
+    \code{docker cp [OPTIONS] SRC\_PATH|- CONTAINER:DEST\_PATH}
 
     \- \ Kopiere Dateien zwichen Container und lokalem Speicher\vspace{5pt}
 
-    \code{CONTAINER:SRC\_PATH DEST\_PATH|-} Kopiere von Conatiner zu lokal\\
-    \code{SRC\_PATH|- CONTAINER:DEST\_PATH} Kopiere von lokal zu Container\\
-    \code{-} Nutze tar archive
+    \-  \ \code{CONTAINER:SRC\_PATH DEST\_PATH|-} Vom Conatiner zu lokal\\
+    \-  \ \code{SRC\_PATH|- CONTAINER:DEST\_PATH} Von lokal zu Container\\
+    \-  \ \code{-} Nutze tar archive
     \medskip\medskip
     
     \code{docker import [OPTIONS] file | URL | - [REPOSITORY[:TAG]]}\\
@@ -920,9 +922,29 @@ docker container stop $(docker container ls -a -q) && \
 docker container prune
 # remove images not tagged and not associated with any containers
 docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+# interaktion mit Registries
+docker push [OPTIONS] NAME[:TAG]
+docker pull [OPTIONS] NAME[:TAG]
     \end{minted}
 \end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{Weiteres zu docker}
+    \code{.dockerignore}
+    \begin{itemize}
+        \item vgl. .gitignore für Docker
+        \item bestimmte Dateien/Ordern ausschließen
+        \item geringere Image Größe
+        \item kein Cache invalidation
+    \end{itemize}
+    \medskip\pause
+    Docker Desktop bietet eine Benutzeroberfläche für die meinsten Befehle\\\pause
+    \begin{minted}{bash}
+
+
+\end{minted}
+
+\end{frame} 
 \begin{frame}[t]
     \frametitle{Dockerfile Best Practices}
     \begin{itemize}
@@ -942,26 +964,6 @@ docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
     }
 \end{frame}
 
-\begin{frame}[fragile]
-    \frametitle{Weiteres zu docker}
-    \code{.dockerignore}
-    \begin{itemize}
-        \item vgl. .gitignore für Docker
-        \item bestimmte Dateien/Ordern ausschließen
-        \item geringere Image Größe
-        \item kein Cache invalidation
-    \end{itemize}
-    \medskip\pause
-    Docker Desktop bietet eine Benutzeroberfläche für die meinsten Befehle\\\pause
-    \begin{minted}{bash}
-# interaktion mit Registries
-> docker push
-> docker pull 
-# Scan auf Sicherheitslücken
-> docker scout   
-\end{minted}
-
-\end{frame}
 \begin{frame}[t]
     \frametitle{Andere UseCases}
     \begin{itemize}
