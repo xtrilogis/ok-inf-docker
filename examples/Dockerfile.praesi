@@ -7,9 +7,6 @@ ARG name
 # for injection at runtime use --env or -e
 ENV NAME=value
 
-# Define a user, change location as needed *
-USER UID:GID
-
 # adjust the current working directory, change location as needed *
 WORKDIR directory
 

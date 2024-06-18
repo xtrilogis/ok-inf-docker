@@ -111,12 +111,17 @@
             \includegraphics[width=0.8\paperwidth]{Bilder/mobydocker.jpg}
         \end{textblock*}    
     }
-    \only<3>{\begin{figure}[h]
+    \pause
+    \begin{figure}[h]
         \centering
         \includegraphics[width=0.95\textwidth]{Bilder/wettbewerb.png}
         \caption*{Wettbewerb zum Icon für Docker\\ Gewonnen hat: Moby Dock}
     \end{figure}
-    }
+    \pause
+    \href{https://www.docker.com/company/newsroom/media-resources/}{Offizielle Logo Guide Line}
+    
+    
+    
 \end{frame}
 
 \begin{frame}[t]
@@ -168,7 +173,7 @@
         Umgebung in der die tatsächliche Anwendung läuft
     \end{block} \pause
     \begin{block}{Registry}
-        z.B. Docker Hub, EAC....
+        z.B. Docker Hub, AWS ECS, ACI....
         Ort an dem viele verschindene Images gespeichert und geteilt werden können
     \end{block}
     \begin{block}{Docker Compose}
@@ -359,19 +364,20 @@
 
     \-  \ Erstelle und starte einen Container von einem Image\vspace{5pt}
 
-    \code{[OPTIONS]}
+    \only<2>{\code{[OPTIONS]}
     \begin{description}[labelindent=0.5cm, style=unboxed, labelwidth=\widthof{-\,-mount mountm}, leftmargin=!]
-        \item[\desclabel{-d}] Container vom Terminal lösen
+        \item[\desclabel{-d/-a}] Container vom Terminal lösen/anheften
         \item[\desclabel{-\,-name}] Container bennen
         \item[\desclabel{-it}] Interaktives Terminal im Container öffnen
         \item[\desclabel{-e}] Umgebungsvariablen setzen
-        \item[\desclabel{-p [host]:[port]}] Port(s) veröffentlichen
+        \item[\desclabel{-p [host]:[port]}] Port(s) veröffentlichen (\small Hostport:Containerport)
         \item[\desclabel{-P}] Alle Ports veröffentlichen
         \item[\desclabel{-\,-rm}] Container nach Beenden entfernen
     \item[\desclabel{-\,-mount mount}] Dateisystem and den Container mounten
         \item[\desclabel{-v, -\,-volume list}] Bind mount ein Volume
         \item[...] 
     \end{description}
+    }
     \code{IMAGE} Referenz zum Image (Tag oder Id/Hash)
 \end{frame}
 
@@ -379,7 +385,8 @@
     \frametitle{Python / FastAPI}
     \begin{textblock*}{\paperwidth}(1cm, 2cm) % {block width}(xcoord, ycoord)
         \includegraphics[width=0.85\paperwidth]{Bilder/Fastapi.png}
-        \end{textblock*}
+    \end{textblock*}
+    %% python basiert auf alpine (ubuntu)
 \end{frame}
 
 
@@ -402,8 +409,8 @@
 > docker start backend
 > docker stop backend
 > docker rm backend
-> docker run -d --name --rm backend \
-    -p 8000:80 fastapiapp:v1
+> docker run --name backend -p 8000:80 \
+    -d --rm fastapiapp:v1
 > docker exec -it backend bash
 # 'exit' um den Container zu verlassen
 \end{minted}
@@ -423,7 +430,7 @@
         \item[\desclabel{-d}] im Hintergund ausführen
         \item[\desclabel{-e}] env Variablen setzen
         \item[\desclabel{-it}] Interaktives Terminal öffnen
-        \item[\desclabel{-w, -\,-workdir string}] Aktuelles Verzeichnis im Container ändern
+        \item[\desclabel{-w, -\,-workdir string}] Arbeitsverzeichnis im Container ändern
         \item[...] 
     \end{description}
 
@@ -484,10 +491,10 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
 \begin{minted}[fontsize=\footnotesize]{bash}
 > cd examples/FastAPI
 > docker build -t fastapiapp:v1 .
-> docker run -d --name backend -p 8000:80 --rm fastapiapp:v1
+> docker run --name backend -p 8000:80 -d --rm fastapiapp:v1
 # Öffne http://localhost:8000/docs + add_song() ausführen
 > docker stop backend # Container automatisch gelöscht
-> docker run -d --name backend -p 8000:80 --rm fastapiapp:v1
+> docker run --name backend -p 8000:80 -d --rm fastapiapp:v1
 # get_songs() ausführen -> Song fehlt :/
 \end{minted}
 \pause\medskip
@@ -510,12 +517,12 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
     \medskip
 \begin{minted}{bash}
 > docker commit backend fastapiapp:v2
-> docker run -d --name backend2 --rm \
-    -p 8080:80 fastapiapp:v2
+> docker run --name backend2 -p 8080:80 \
+    -d --rm fastapiapp:v2
 # Öffne localhost:8080/docs -> get_songs() hat neue Songs
 
-> docker run -d -\,-name backend ,-rm \
-    -p 8000:80 fastapiapp:v1
+> docker run --name backend -p 8000:80 \
+    -d --rm fastapiapp:v1
 # Öffne localhost:8000/docs -> get_songs() hat keine
 \end{minted}
 \end{frame}
@@ -554,9 +561,9 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
 \begin{minted}{bash}
 # Note: be aware of the working directory of your app
 # in this case code 'WORKDIR /code'
-> docker run -d --rm --name backend \
+> docker run --name backend -p 8000:80 -d --rm \
     -v ${PWD}/app/songs.json:/code/app/songs.json \
-    -p 8000:80 fastapiapp:v1 
+    fastapiapp:v1
 \end{minted}
             
 \end{frame}
@@ -567,7 +574,7 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
     \end{textblock*}
 \end{frame}  
 
-\subsection{React}
+\subsection{Beispiel: React}
 %% Überletung jetzt wollen wir natürlich auch noch eine Oberfläche
 
     
@@ -603,17 +610,22 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
 \subsection{Multistage Builds}
 \begin{frame}[t]
     \frametitle{Multistage builds}
-    Idee: Image aufeinanderaufbauende Teile teilen, zwischen den Teilen nur die nötigen Dinge kopieren
+    Idee: Image aufeinanderaufbauende Teile teilen, zwischen den Teilen nur die nötigen Sachen kopieren
 
-    z.B. Stage 1: App compile, Stage 2: Compilierte App ausführen (kein Build context) 
+    z.B. 
+    
+    Stage 1: App kompilieren
+    
+    Stage 2: Compilierte App ausführen (kein Build context) 
     \pause
+    \vspace{8pt}
     Vorteile
     \begin{itemize}
-        \item Smaller image size
-        \item faster build times
-        \item improved security (only runtime artifacts and dependencies)
-        \item code isolation and reusability
-        \item Easier debugging and troubleshooting
+        \item Kleiner Images
+        \item Schnellere Build-times
+        \item Verbesserte Sicherheit (nur nötigste Dateien)
+        \item Codeisolation und -wiederverwendung
+        \item Besseres Debuggen und Fehlerfinden
     \end{itemize} 
 \end{frame}
 
@@ -631,6 +643,7 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
     -p 1337:80 reactapp:prod
 # Öffne localhost:1337
 \end{minted}
+\pause
 \vspace{8pt}
 Vergleiche die Größe der Images:\pause
 
@@ -640,44 +653,6 @@ frontend: 50.9 MB
 
 \end{frame}
 
-\begin{frame}[t]
-    \frametitle{Dockerfile Best Practices}
-    \begin{itemize}
-        \item \code{RUN} instructions mit \&\& zusammenfassen
-        \item \code{COPY} sinnvoll platzieren, damit Cache best möglich genutzt werden kann
-        \item \code{ADD} nur für \code{ADD} spezifische Funktionen
-        \item Volumes und Mounts für persistententen Speicher nutzen
-        \item Multistage builds verwenden
-    \end{itemize} 
-    \only<2>{
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=0.6\textwidth]{Bilder/Hadolint.png}
-        \caption*{Plugin für die Arbeit mit Docker}
-    \end{figure}
-    }
-\end{frame}
-
-\begin{frame}[fragile]
-    \frametitle{Weiteres zu docker}
-    \code{.dockerignore}
-    \begin{itemize}
-        \item vgl. .gitignore für Docker
-        \item bestimmte Dateien/Ordern ausschließen
-        \item geringere Image Größe
-        \item kein Cache invalidation
-    \end{itemize}
-    \medskip\pause
-    Docker Desktop bietet eine Benutzeroberfläche für die meinsten Befehle\\\pause
-    \begin{minted}{bash}
-# interaktion mit Registries
-> docker push
-> docker pull 
-# Scan auf Sicherheitslücken
-> docker scout   
-\end{minted}
-Weitere Befehle am Ende
-\end{frame}
 %% Pause alle Container stoppen, ggf kurz Docker Desktop zeigen
 \section{Docker Compose}
 \begin{frame}[plain]
@@ -689,12 +664,12 @@ Weitere Befehle am Ende
 \begin{frame}[t]
     \frametitle{Docker Compose}
     \begin{block}{Was?}
-        Tool um Multi-Container Anwendungen einfach auszuführen\\
-        eine Konfiguration, statt in meheren Terminals alle verschiedene Container laufen zu lassen
+        Tool um Multi-Container Anwendungen einfaches auszuführen
+        über eine zentrale Konfiguration
     \end{block}\pause
     \begin{block}{Warum?}
         \begin{itemize}
-            \item leichter mit mehreren Container zuarbeiten
+            \item Erleichtert Arbeit mit mehreren Container
             \item gute Portabilität
             \item schnelle Anwendungsentwicklung
         \end{itemize}
@@ -749,7 +724,7 @@ Weitere Befehle am Ende
     \end{textblock*}
 }
 \only<2>{}
-\begin{textblock*}{1.3cm}(11cm,7cm) % {block width}(xcoord, ycoord)
+\begin{textblock*}{1.3cm}(11cm,6.8cm) % {block width}(xcoord, ycoord)
     \huge \textcolor{red}{vs.}
 \end{textblock*}
 \end{frame}
@@ -859,7 +834,7 @@ Weitere Befehle am Ende
 \section{Weitere Befehle}
 \begin{frame}[t]
     \begin{textblock*}{\paperwidth}(0.7cm,0.5cm) % {block width}(xcoord, ycoord)
-        \includegraphics[width=0.9\paperwidth]{Bilder/dockercommand.png}
+        \includegraphics[width=0.9\paperwidth]{Bilder/Commands.png}
     \end{textblock*}
 \end{frame} 
 
@@ -925,6 +900,68 @@ Weitere Befehle am Ende
 
 \end{frame}
 
+\begin{frame}[fragile]
+    \frametitle{ein, zwei hilfreiche Befehle}
+    \begin{minted}[fontsize=\footnotesize]{bash}
+# beim starten interaktives Terminal öffnen
+docker rund -it CONTAINER bash 
+docker inspect --size CONTAINER
+docker inspect --format=\
+ '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' CONTAINER
+
+# print containers with network type
+docker ps -a --format '{{ .ID }} {{ .Names }} {{ json .Networks }}'
+# Removing all unused (containers, images, networks and volumes)
+docker system prune -f
+# Stopping & Removing all Containers
+docker container stop $(docker container ls -a -q) && \
+  docker container rm $(docker container ls -a -q)
+# Remove all stopped containers
+docker container prune
+# remove images not tagged and not associated with any containers
+docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+    \end{minted}
+\end{frame}
+
+\begin{frame}[t]
+    \frametitle{Dockerfile Best Practices}
+    \begin{itemize}
+        \item \code{RUN} instructions mit \&\& zusammenfassen
+        \item \code{COPY} sinnvoll platzieren, damit Cache best möglich genutzt werden kann
+        \item \code{ADD} nur für \code{ADD} spezifische Funktionen
+        \item Volumes und Mounts für persistententen Speicher nutzen
+        \item Multistage builds verwenden
+        \item passende, leichte Baseimages nutzen (alpine oder slim Images)
+    \end{itemize} 
+    \only<2>{
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.6\textwidth]{Bilder/Hadolint.png}
+        \caption*{Plugin für die Arbeit mit Docker}
+    \end{figure}
+    }
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Weiteres zu docker}
+    \code{.dockerignore}
+    \begin{itemize}
+        \item vgl. .gitignore für Docker
+        \item bestimmte Dateien/Ordern ausschließen
+        \item geringere Image Größe
+        \item kein Cache invalidation
+    \end{itemize}
+    \medskip\pause
+    Docker Desktop bietet eine Benutzeroberfläche für die meinsten Befehle\\\pause
+    \begin{minted}{bash}
+# interaktion mit Registries
+> docker push
+> docker pull 
+# Scan auf Sicherheitslücken
+> docker scout   
+\end{minted}
+
+\end{frame}
 \begin{frame}[t]
     \frametitle{Andere UseCases}
     \begin{itemize}
@@ -942,11 +979,16 @@ Weitere Befehle am Ende
         \item \href{https://www.docker.com/}{https://www.docker.com/}
         \item Offizielle Dokumentation: \href{https://docs.docker.com/get-started/}{https://docs.docker.com/get-started/}
         \item \href{https://www.heise.de/news/Wie-man-Docker-auf-dem-Raspberry-Pi-in-15-Minuten-einrichtet-7524692.html}{Wie man Docker auf Rasberry Pi einrichtet}
+        \item \href{https://shihabkhan1.github.io/overleaf/stepbystep.html}{Host your own Overleaf}
+        \item \href{https://github.com/docker-library}{Git Hub für offizielle Images}
     \end{itemize} 
     \begin{block}{Weitere Themen für Lightning Talks und Full Talks}
         \begin{itemize}
             \item Docker Networks
             \item Docker Compose (ausführlicher)
+            \item Dockerfile alle Instruktionen
+            \item Docker Images, die man kennen sollte
+            \item Docker Swarm
             \item Kubernetes
         \end{itemize}
         

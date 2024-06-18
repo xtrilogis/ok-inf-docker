@@ -1,3 +1,3 @@
-FROM alpine:latest
+FROM ubuntu:latest
 
 CMD [ "echo", "Hello World" ]

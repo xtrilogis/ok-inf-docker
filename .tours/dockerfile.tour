@@ -15,52 +15,52 @@
     {
       "file": "examples/Dockerfile.praesi",
       "description": "ENV instruction\r\n\r\nSet environment variables. Can also be set at runtime with `--env` or `-e`\r\n\r\nUnterschied zu ARG: ARG ist nur zur buildtime verfügbar, ENV existiert als Umgebungsvariable im fertigen Image",
-      "line": 11
+      "line": 8
     },
     {
       "file": "examples/Dockerfile.praesi",
       "description": "WORKDIR instruction\r\n\r\nSet the working directory for any subsequent instructions as well as for later when running the image\r\n- `WORKDIR` affects `RUN, CMD, ENTRYPOINT, COPY, ADD`\r\n- `WORKDIR` can be adjusted several time, but is executed relative to the previous value\r\n```Dockerfile\r\nWORKDIR /path/to/workdir\r\nWORKDIR relative/path\r\n```\r\n\r\nBeispiel:\r\n```Dockerfile\r\nWORKDIR /etc/\r\nWORKDIR user/app\r\n```",
-      "line": 14
+      "line": 11
     },
     {
       "file": "examples/Dockerfile.praesi",
       "description": "COPY instruction\r\n\r\nThe COPY instruction copies new files or directories from <src> and adds them to the filesystem of the container at the path <dest>.\r\n\r\nIf source or destination contains whitespaces enclose it with \"\r\n\r\n```dockerfile\r\nCOPY test.txt relativeDir/\r\nCOPY test.txt /absoluteDir/\r\nCOPY hom* /mydir/\r\n```",
-      "line": 17
+      "line": 14
     },
     {
       "file": "examples/Dockerfile.praesi",
       "description": "ADD instruction\r\n\r\nThe ADD instruction copies new files, directories or remote file URLs from <src> and adds them to the filesystem of the image at the path <dest>.\r\n\r\n```dockerfile\r\nADD hom* /mydir/\r\nADD git@git.example.com:foo/bar.git /bar\r\n```",
-      "line": 20
+      "line": 17
     },
     {
       "file": "examples/Dockerfile.praesi",
       "description": "ADD vs. COPY\r\n\r\nADD: has more features link copying from remote sources or automatically unpackung a compressed source\r\n\r\nBest Practice: Use COPY for moste of the copying and ADD only for tasks that require ADD features",
-      "line": 21
+      "line": 18
     },
     {
       "file": "examples/Dockerfile.praesi",
       "description": "EXPOSE instruction\r\n\r\nThe EXPOSE instruction informs Docker that the container listens on the specified network ports at runtime. \r\n\r\n- `EXPOSE` alone does not enable the container to be accessed through that port add `-p/--publish` to the `docker run`command. It functions as a type of documentation between the person who builds the image and the person who runs the container, about which ports are intended to be published.\r\n- `expose` tells the container to expect communication through that port\r\n- `publish` connects the exposed port to a port in the external world, opens the port for usage\r\n\r\n```dockerfile\r\nEXPOSE 80/udp\r\nEXPOSE 80/tcp\r\n```",
-      "line": 23
+      "line": 20
     },
     {
       "file": "examples/Dockerfile.praesi",
       "description": "RUN instruction\r\n\r\nThe RUN instruction will execute any commands to create a new layer on top of the current image. The added layer is used in the next step in the Dockerfile\r\n\r\n```dockerfile\r\n# Shell form:\r\nRUN [OPTIONS] <command> ...\r\n# Exec form:\r\nRUN [OPTIONS] [ \"<command>\", ... ]\r\n```\r\nBeispiel:\r\n```dockerfile\r\nRUN apt-get update -y\r\nRUN --mount=type=cache,target=/root/.cache/go-build \\\r\n  go build ...\r\nRUN pip install --no-cache-dir --upgrade -r /code/requirements.txt\r\n```",
-      "line": 27
+      "line": 23
     },
     {
       "file": "examples/Dockerfile.praesi",
       "description": "ENTRYPOINT instruction\r\n\r\nAn ENTRYPOINT allows you to configure a container that will run as an executable\r\n\r\n```dockerfile\r\n# exec from\r\nENTRYPOINT [\"executable\", \"param1\", \"param2\"]\r\n# shell form\r\nENTRYPOINT command param1 param2\r\n```\r\nBeispiel:\r\n```dockerfile\r\nENTRYPOINT [\"echo\", \"Hello World\"]\r\n```",
-      "line": 30
+      "line": 27
     },
     {
       "file": "examples/Dockerfile.praesi",
       "description": "CMD instruction\r\n\r\nThe CMD instruction sets the command to be executed when running a container from an image.\r\n\r\n```dockerfile\r\n# exec from\r\nCMD [\"executable\",\"param1\",\"param2\"]\r\n# shell form\r\nCMD command param1 param2\r\n```\r\nBeispiel\r\n```dockerfile\r\nCMD [\"uvicorn\", \"app.api:app\", \"--host\", \"0.0.0.0\", \"--port\", \"80\"]\r\nCMD echo Hello Students\r\n```",
-      "line": 32
+      "line": 29
     },
     {
       "file": "examples/Dockerfile.praesi",
       "description": "CMD vs. ENTRYPOINT\r\n\r\n- beide definieren den, was nach Container start ausgeführt wird\r\n- `CMD` kann überschrieben werden\r\n- `ENTRYPOINT` bestimmt den Befehl, neue Parameter werden angehangen",
-      "line": 38
+      "line": 30
     },
     {
       "file": "examples/Dockerfile.praesi",
