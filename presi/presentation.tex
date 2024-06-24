@@ -532,7 +532,8 @@ docker exec -e VAR_A=1 -e VAR_B=2 backend env
 \begin{frame}[t]
     \frametitle{Volumes und Mounts}
     \begin{itemize}
-        \item Docker Container sind stateless
+        \item Docker Container sind nicht persistent
+					\item Images sind sateless
         \item beide verbinden Speicher/Verzeichnisse vom der Host Maschine zu Speicher im Container
     \end{itemize} \pause
     \begin{block}{Volume}
