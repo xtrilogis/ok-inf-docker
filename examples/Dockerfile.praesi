@@ -1,5 +1,5 @@
 # Only Comments and ARGs may precede the FROM instruction
-FROM image[:version/tag]
+FROM image[:version/tag] 
 
 # hier ein beispiel, wie ARG gesetzt wrid
 ARG name
