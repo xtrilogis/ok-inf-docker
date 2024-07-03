@@ -1,14 +1,43 @@
-todo 
-- [ ] example for it container
-- [x] pack python swt into container
-- [x] pack frontend into container
-- [ ] ~~add sql dep~~
-- [ ] ~~add db container~~
-- [ ] list up Question the Lightning Talk should awnser
-- [ ] Dockerignore
-- [ ] Code Touren testen
-- [ ] #todo Code tour bild
-- [ ] schöner weg um die ClI commands mit argumenten zu präsentiern
+
+```
+docker build -t example:multi -f Dockerfile.multi .
+docker build -t example:single -f Dockerfile.single .
+docker images
+
+docker build -t example:cmd -f Dockerfile.cmd .
+docker build -t example:entry -f Dockerfile.entry .
+docker run example:cmd
+docker run example:cmd Hallo Leute
+docker run example:cmd echo Hallo Leute
+docker run example:entry
+docker run example:entry Hallo Leute
+
+cd .\FastAPI\
+docker build -t fastapiapp:v1 .
+docker run --name backend -p 8000:80 fastapiapp:v1
+docker start backend
+docker stop backend
+docker rm backend
+docker run --name backend -p 8000:80 -d --rm fastapiapp:v1
+docker exec -it backend bash
+docker stop backend
+
+docker run --name backend -p 8000:80 -d --rm fastapiapp:v1 -v ${PWD}/app/songs.json:/code/app/songs.json 
+docker stop backend
+docker run -d --rm --name backend  -p 8000:80 fastapiapp:v1 -v ${PWD}/app/songs.json:/code/app/songs.json
+
+cd ..\React\
+docker build -t reactapp:dev .
+#todo try
+docker run -it --rm --name frontenddev -v ${PWD}:/app -v /app/node_modules -p 3000:3000 reactapp:dev
+docker build -f Dockerfile.prod -t reactapp:prod .
+docker run -it --rm --name frontend -p 1337:80 reactapp:prod
+
+cd ..
+docker-compose up
+docker-compose up -d
+docker-compose down
+```
 
 ```query
 tag:#todo  path:Docs/Container
@@ -17,11 +46,10 @@ Outline
 - [ ] Quickstart (Motivation, kleiner Überblick?) vgl. [[#Quick Start]] 
 - [ ] Wichtige Begriffe (Container, Images)
 - [ ] Beispiel: `docker run hello world`
-- [ ] `docker run` erklären und wichtige Flags
-	- [ ] Überleitung: woher kommen images? Repositorytories oder Dockerfile
-- [ ] Was ist eine Dockerfile? Welche Elemente hat ein Dockerfile?
+
+- [x] Was ist eine Dockerfile? Welche Elemente hat ein Dockerfile?
 	- [ ] Einzelne Commands (RUN, COPY, ...)
-	- [ ] `docker build` erklären
+	- [x] `docker build` erklären
 	- [ ] Beispiele:
 		- [ ] CMD vs Entrypoint 
 			- [ ] flags -t und -f erklären
@@ -33,6 +61,8 @@ Outline
 			- [ ] (`docker exec` und `-it` erklären)
 			- [ ] start, stop, rm
 	- [ ] Tipps für effizientere Images
+- [ ] `docker run` erklären und wichtige Flags
+	- [ ] Überleitung: woher kommen images? Repositorytories oder Dockerfile
 - [ ] Volumes
 	- [ ] Überleitung: run mir --rm speichert songs nicht
 	- [ ] Fast API Beispiel ausbauen, um **bind mount** zu nutzen
